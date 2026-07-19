@@ -1,0 +1,129 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getArticleBySlug } from '../../data/articles';
+
+export async function getStaticPaths() {
+  const { articles } = await import('../../data/articles');
+  return articles.map((article) => ({
+    params: { slug: article.slug },
+    props: { article },
+  }));
+}
+
+const { slug } = Astro.params;
+const article = getArticleBySlug(slug);
+
+if (!article) {
+  return Astro.redirect('/404');
+}
+
+// 将 markdown 风格的内容转换为 HTML（简单处理）
+function renderContent(content: string): string {
+  let html = content
+    .replace(/^## (.+)$/gm, '<h2 class="font-serif-display text-2xl font-bold text-charcoal-900 dark:text-cream-100 mt-12 mb-4">$1</h2>')
+    .replace(/^### (.+)$/gm, '<h3 class="font-serif-display text-xl font-bold text-charcoal-900 dark:text-cream-100 mt-8 mb-3">$1</h3>')
+    .replace(/\n\n/g, '</p><p class="text-charcoal-800/80 dark:text-cream-100/80 leading-relaxed mb-4">')
+    .replace(/^(.+)$/gm, (match, p1) => {
+      if (p1.startsWith('<h') || p1.startsWith('</')) return match;
+      return `<p class="text-charcoal-800/80 dark:text-cream-100/80 leading-relaxed mb-4">${p1}</p>`;
+    });
+  return html;
+}
+---
+
+<BaseLayout title={article.title} description={article.excerpt}>
+  <!-- 文章页头 -->
+  <section class="py-16 lg:py-20">
+    <div class="max-w-3xl mx-auto px-6 lg:px-8">
+      <div class="animate-fade-in-up">
+        <a href="/thinking" class="inline-flex items-center text-sm text-ochre-500 hover:text-ochre-600 mb-6 transition-colors">
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+          </svg>
+          返回思考列表
+        </a>
+        
+        <span class="inline-block text-xs font-medium px-3 py-1 rounded-full bg-ochre-500/10 text-ochre-600 dark:text-ochre-400 mb-4">
+          {article.category}
+        </span>
+        
+        <h1 class="font-serif-display text-3xl sm:text-4xl lg:text-5xl font-bold text-charcoal-900 dark:text-cream-100 leading-tight mb-6">
+          {article.title}
+        </h1>
+        
+        <div class="flex items-center space-x-4 text-sm text-charcoal-800/60 dark:text-cream-100/60 font-mono-code">
+          <span>{article.date}</span>
+          <span>·</span>
+          <span>{article.readTime} 阅读</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 文章内容 -->
+  <article class="pb-20">
+    <div class="max-w-3xl mx-auto px-6 lg:px-8">
+      <div class="prose prose-lg dark:prose-invert max-w-none animate-on-scroll animate-fade-in-up">
+        <!-- 装饰分隔线 -->
+        <div class="decorative-line mb-12"></div>
+        
+        <!-- 文章正文 -->
+        <div class="article-content space-y-4">
+          <Fragment set:html={renderContent(article.content)} />
+        </div>
+        
+        <!-- 文末标注 -->
+        <div class="mt-16 pt-8 border-t border-charcoal-900/10 dark:border-cream-100/10">
+          <p class="text-sm text-charcoal-800/50 dark:text-cream-100/50 italic">
+            以上观点基于项目实践中的总结与反思，将持续迭代更新。
+          </p>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- 相关推荐 -->
+  <section class="py-16 border-t border-charcoal-900/10 dark:border-cream-100/10">
+    <div class="max-w-3xl mx-auto px-6 lg:px-8">
+      <h3 class="font-serif-display text-xl font-bold text-charcoal-900 dark:text-cream-100 mb-6">
+        继续阅读
+      </h3>
+      <div class="flex justify-between">
+        <a href="/thinking" class="btn-secondary text-sm">
+          查看全部文章
+        </a>
+        <a href="/projects" class="text-sm text-ochre-500 hover:text-ochre-600 font-medium inline-flex items-center">
+          看看项目作品
+          <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .article-content h2 {
+    font-family: Georgia, Cambria, "Times New Roman", Times, serif;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: inherit;
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+  }
+  
+  .article-content h3 {
+    font-family: Georgia, Cambria, "Times New Roman", Times, serif;
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: inherit;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  .article-content p {
+    line-height: 1.8;
+    margin-bottom: 1rem;
+  }
+</style>

@@ -1,0 +1,44 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import { projects } from '../../data/projects';
+---
+
+<BaseLayout title="项目作品" description="AI产品经理项目作品集">
+  <!-- 页头 -->
+  <section class="py-16 lg:py-24">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+      <div class="max-w-3xl animate-fade-in-up">
+        <span class="text-sm font-mono-code text-ochre-500 tracking-widest uppercase">Portfolio</span>
+        <h1 class="font-serif-display text-4xl lg:text-5xl font-bold text-charcoal-900 dark:text-cream-100 mt-3 mb-6">
+          项目作品
+        </h1>
+        <p class="text-lg text-charcoal-800/70 dark:text-cream-100/70 leading-relaxed">
+          从 C 端创意工具到 B 端效率产品，每一个项目都是对 AI 产品边界的探索。
+          <span class="text-ochre-500/70 italic">C 端自我认知 · B 端电商决策 · 全场景财税搜索，三个项目三种场景</span>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 项目列表 -->
+  <section class="pb-20">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+      <div class="space-y-8">
+        {projects.map((project, index) => (
+          <div class={`animate-on-scroll animate-fade-in-up animate-delay-${index * 100}`}>
+            <ProjectCard
+              title={project.title}
+              subtitle={project.subtitle}
+              description={project.description}
+              tags={project.tags}
+              coverImage={project.coverImage}
+              slug={project.slug}
+              layout="horizontal"
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

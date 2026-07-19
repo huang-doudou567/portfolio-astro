@@ -1,0 +1,304 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+// 技能栈
+const skillGroups = [
+  {
+    title: 'AI Coding',
+    skills: ['Codex', 'Claude Code', 'Cursor'],
+  },
+  {
+    title: '核心技术',
+    skills: ['RAG', 'Prompt Engineering', 'Workflow 搭建', 'Agent 架构'],
+  },
+  {
+    title: '平台能力',
+    skills: ['Skill / Plugin', 'Rules 编写', 'MCP 接入', '模型评测'],
+  },
+  {
+    title: '产品能力',
+    skills: ['AI 产品需求设计', '迭代管理', '用户研究', '数据驱动决策'],
+  },
+];
+
+// 工作履历
+const experiences = [
+  {
+    company: '闲鱼 · 交易产品组 · AI 方向',
+    position: 'AI 产品实习生',
+    period: '2024.08 – 2025.02',
+    description: '负责 AI Agent 导购的产品设计与评测体系搭建。从单轮对话优化到多轮 Agent 评估，构建了完整的评测闭环，涵盖 Prompt 工程、专题库建设、Bad case 归因与全链路监控。优化后不良回复率降低 12%，高频问题应答覆盖率达 95%，意图识别率提升至 94%。',
+    highlights: ['不良回复率 ↓12%', '应答覆盖率 95%', '意图识别率 94%', '高风险拦截率 98%'],
+  },
+];
+
+// 教育经历
+const education = [
+  {
+    school: '湖南大学（双一流 985 211）',
+    degree: '税务专业硕士',
+    period: '2023.09 – 2025.06',
+  },
+  {
+    school: '湖南农业大学',
+    degree: '金融 CFA 本科',
+    period: '2019.09 – 2023.06',
+  },
+];
+
+// 个人标签
+const personalTags = [
+  'Agent 项目落地', '从0到1搭建评测', 'C端+B端双栖',
+  '全栈产品经理', '学术背景', 'AI 原生思维',
+  '产品驱动技术', '结果导向',
+];
+
+// 荣誉奖项
+const awards = [
+  '校一等奖学金', '优秀学生标兵', '优秀毕业生',
+  'CFA 金融分析大赛小组一等奖', '互联网+大学生创新创业大赛二等奖',
+];
+---
+
+<BaseLayout title="关于我" description="AI产品经理个人介绍">
+  <!-- 页头 + 头像 -->
+  <section class="py-16 lg:py-24">
+    <div class="max-w-4xl mx-auto px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row items-center md:items-start gap-8 md:gap-12 animate-fade-in-up">
+        <!-- 头像 -->
+        <div class="flex-shrink-0">
+          <div class="w-32 h-32 md:w-40 md:h-40 rounded-full border-4 border-ochre-500/20 overflow-hidden bg-cream-50 dark:bg-dark-bg-900">
+            <img src="/images/头像.jpg" alt="黄可欣" class="w-full h-full object-contain" />
+          </div>
+        </div>
+
+        <!-- 基本信息 -->
+        <div class="text-center md:text-left">
+          <span class="text-sm font-mono-code text-ochre-500 tracking-widest uppercase">About Me</span>
+          <h1 class="font-serif-display text-3xl md:text-4xl font-bold text-charcoal-900 dark:text-cream-100 mt-2 mb-2">
+            黄可欣
+          </h1>
+          <p class="text-lg text-charcoal-800/70 dark:text-cream-100/70 mb-4">
+            AI 产品经理 · Agent 产品设计者
+          </p>
+          <div class="flex flex-wrap gap-2 justify-center md:justify-start">
+            <span class="tag text-ochre-600 dark:text-ochre-400 text-xs">📍 长沙</span>
+            <span class="tag text-ochre-600 dark:text-ochre-400 text-xs">💼 求职中</span>
+            <span class="tag text-ochre-600 dark:text-ochre-400 text-xs">🎯 AI PM</span>
+            <span class="tag text-ochre-600 dark:text-ochre-400 text-xs">📧 maravillosokk@163.com</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 个人简介 -->
+  <section class="pb-16">
+    <div class="max-w-4xl mx-auto px-6 lg:px-8">
+      <div class="animate-on-scroll animate-fade-in-up">
+        <h2 class="font-serif-display text-xl font-bold text-charcoal-900 dark:text-cream-100 mb-4 flex items-center">
+          <span class="w-8 h-0.5 bg-ochre-500 mr-3"></span>
+          个人简介
+        </h2>
+        <div class="pl-11 space-y-4 text-charcoal-800/80 dark:text-cream-100/80 leading-relaxed">
+          <p>
+            我是 AI 产品经理，专注 Agent 架构、AI 驱动的信息检索和用户侧 AI 产品设计。
+            我相信"让 AI 理解人"比"让人适应 AI"更有价值——这也是我所有项目的出发点。
+          </p>
+          <p>
+            从学术研究到产品落地，我习惯用结构化思维拆解问题。三个项目覆盖了 C 端自我认知、
+            B 端电商决策、以及全场景的信息检索——它们共同的线索是：让 AI 不只是"回答问题"，
+            而是真正理解用户所处的上下文。
+          </p>
+          <p class="text-ochre-500/70 italic text-sm">
+            湖南大学税务硕士，金融本科。校一等奖学金/优秀毕业生/CFA 金融分析大赛一等奖。
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 技能栈 -->
+  <section class="py-16 bg-cream-50/50 dark:bg-dark-bg-900/30">
+    <div class="max-w-4xl mx-auto px-6 lg:px-8">
+      <div class="text-center mb-12 animate-on-scroll animate-fade-in-up">
+        <h2 class="font-serif-display text-2xl font-bold text-charcoal-900 dark:text-cream-100 mb-2">
+          技能栈
+        </h2>
+        <p class="text-sm text-charcoal-800/60 dark:text-cream-100/60">
+          四组核心能力，构建完整的 AI 产品能力矩阵
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        {skillGroups.map((group, index) => (
+          <div class={`animate-on-scroll animate-fade-in-up animate-delay-${index * 100}`}>
+            <div class="h-full p-6 rounded-xl border border-charcoal-900/10 dark:border-cream-100/10 bg-cream-100/50 dark:bg-dark-bg-900/50">
+              <h3 class="font-medium text-charcoal-900 dark:text-cream-100 mb-4 flex items-center">
+                <span class="w-6 h-6 rounded-md bg-ochre-500/10 text-ochre-500 flex items-center justify-center text-xs font-mono-code font-bold mr-2">
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+                {group.title}
+              </h3>
+              <div class="flex flex-wrap gap-2">
+                {group.skills.map((skill) => (
+                  <span class="px-3 py-1 text-xs rounded-full bg-charcoal-900/5 dark:bg-cream-100/5 text-charcoal-800/80 dark:text-cream-100/80">
+                    {skill}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- 教育经历 -->
+  <section class="py-16">
+    <div class="max-w-4xl mx-auto px-6 lg:px-8">
+      <div class="text-center mb-12 animate-on-scroll animate-fade-in-up">
+        <h2 class="font-serif-display text-2xl font-bold text-charcoal-900 dark:text-cream-100 mb-2">
+          教育经历
+        </h2>
+      </div>
+
+      <div class="space-y-6">
+        {education.map((edu, index) => (
+          <div key={index} class="animate-on-scroll animate-fade-in-up">
+            <div class="relative pl-8 border-l-2 border-ochre-500/30">
+              <div class="absolute -left-2 top-0 w-4 h-4 rounded-full bg-ochre-500 border-4 border-cream-100 dark:border-dark-bg-950"></div>
+              <div class="p-6 rounded-xl border border-charcoal-900/10 dark:border-cream-100/10 bg-cream-50/50 dark:bg-dark-bg-900/50">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
+                  <div>
+                    <h3 class="font-serif-display text-lg font-bold text-charcoal-900 dark:text-cream-100">
+                      {edu.school}
+                    </h3>
+                    <p class="text-ochre-500 font-medium text-sm">{edu.degree}</p>
+                  </div>
+                  <span class="text-xs font-mono-code text-charcoal-800/50 dark:text-cream-100/50 mt-1 sm:mt-0">
+                    {edu.period}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- 荣誉奖项 -->
+  <section class="py-16 bg-cream-50/50 dark:bg-dark-bg-900/30">
+    <div class="max-w-4xl mx-auto px-6 lg:px-8 text-center">
+      <div class="animate-on-scroll animate-fade-in-up">
+        <h2 class="font-serif-display text-2xl font-bold text-charcoal-900 dark:text-cream-100 mb-6">
+          荣誉奖项
+        </h2>
+        <div class="flex flex-wrap justify-center gap-3">
+          {awards.map((award, index) => (
+            <span
+              class:list={[
+                'px-4 py-2 rounded-full text-sm font-medium transition-all hover:scale-105 cursor-default',
+                index % 2 === 0
+                  ? 'bg-ochre-500/10 text-ochre-600 dark:text-ochre-400 border border-ochre-500/20'
+                  : 'bg-transparent text-charcoal-800/70 dark:text-cream-100/70 border border-charcoal-900/20 dark:border-cream-100/20'
+              ]}
+            >
+              {award}
+            </span>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 工作履历 -->
+  <section class="py-16">
+    <div class="max-w-4xl mx-auto px-6 lg:px-8">
+      <div class="text-center mb-12 animate-on-scroll animate-fade-in-up">
+        <h2 class="font-serif-display text-2xl font-bold text-charcoal-900 dark:text-cream-100 mb-2">
+          实习经历
+        </h2>
+      </div>
+
+      <div class="space-y-8">
+        {experiences.map((exp, index) => (
+          <div key={index} class="animate-on-scroll animate-fade-in-up">
+            <div class="relative pl-8 border-l-2 border-ochre-500/30">
+              <div class="absolute -left-2 top-0 w-4 h-4 rounded-full bg-ochre-500 border-4 border-cream-100 dark:border-dark-bg-950"></div>
+
+              <div class="p-6 rounded-xl border border-charcoal-900/10 dark:border-cream-100/10 bg-cream-50/50 dark:bg-dark-bg-900/50">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-3">
+                  <div>
+                    <h3 class="font-serif-display text-lg font-bold text-charcoal-900 dark:text-cream-100">
+                      {exp.position}
+                    </h3>
+                    <p class="text-ochre-500 font-medium text-sm">{exp.company}</p>
+                  </div>
+                  <span class="text-xs font-mono-code text-charcoal-800/50 dark:text-cream-100/50 mt-1 sm:mt-0">
+                    {exp.period}
+                  </span>
+                </div>
+
+                <p class="text-sm text-charcoal-800/80 dark:text-cream-100/80 leading-relaxed mb-4">
+                  {exp.description}
+                </p>
+
+                <div class="flex flex-wrap gap-2">
+                  {exp.highlights.map((highlight) => (
+                    <span class="text-xs px-2.5 py-1 rounded-full bg-ochre-500/10 text-ochre-600 dark:text-ochre-400">
+                      {highlight}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- 个人标签 -->
+  <section class="py-16 bg-cream-50/50 dark:bg-dark-bg-900/30">
+    <div class="max-w-4xl mx-auto px-6 lg:px-8 text-center">
+      <div class="animate-on-scroll animate-fade-in-up">
+        <h2 class="font-serif-display text-2xl font-bold text-charcoal-900 dark:text-cream-100 mb-6">
+          一些标签
+        </h2>
+        <div class="flex flex-wrap justify-center gap-3">
+          {personalTags.map((tag, index) => (
+            <span
+              class:list={[
+                'px-4 py-2 rounded-full text-sm font-medium transition-all hover:scale-105 cursor-default',
+                index % 2 === 0
+                  ? 'bg-ochre-500/10 text-ochre-600 dark:text-ochre-400 border border-ochre-500/20'
+                  : 'bg-transparent text-charcoal-800/70 dark:text-cream-100/70 border border-charcoal-900/20 dark:border-cream-100/20'
+              ]}
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="py-16">
+    <div class="max-w-3xl mx-auto px-6 lg:px-8 text-center">
+      <div class="animate-on-scroll animate-fade-in-up">
+        <p class="text-charcoal-800/70 dark:text-cream-100/70 mb-6">
+          想更全面地了解我？下载我的简历
+        </p>
+        <a href="/resume.pdf" download class="btn-primary inline-flex">
+          下载简历 PDF
+          <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

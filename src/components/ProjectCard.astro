@@ -1,0 +1,76 @@
+---
+// 项目卡片组件
+interface Props {
+  title: string;
+  subtitle: string;
+  description: string;
+  tags: string[];
+  coverImage: string;
+  slug: string;
+  layout?: 'horizontal' | 'vertical';
+}
+
+const { title, subtitle, description, tags, coverImage, slug, layout = 'vertical' } = Astro.props;
+
+// 封面图映射
+const coverImages: Record<string, string> = {
+  'your-world-editor': '/images/projects/1封面面板.jpg',
+  'snack-selection-agent': '/images/projects/1-封面-数据面板.jpg',
+  'tax-policy-search': '/images/projects/1封面-搜索面板.jpg',
+};
+---
+
+<a 
+  href={`/projects/${slug}`}
+  class:list={[
+    'group card-hover block rounded-xl overflow-hidden border border-charcoal-900/10 dark:border-cream-100/10 bg-cream-50/50 dark:bg-dark-bg-900/50',
+    layout === 'horizontal' ? 'flex flex-col md:flex-row' : ''
+  ]}
+>
+  <!-- 封面图 -->
+  <div class:list={[
+    'overflow-hidden bg-charcoal-900/5 dark:bg-cream-100/5',
+    layout === 'horizontal' ? 'w-full md:w-2/5 h-48 md:h-auto' : 'w-full h-56'
+  ]}>
+    {
+      coverImages[slug]
+        ? <img src={coverImages[slug]} alt={title} class="w-full h-full object-contain p-1" loading="lazy" />
+        : <div class="w-full h-full flex items-center justify-center text-xs text-charcoal-800/40">暂无封面</div>
+    }
+  </div>
+  
+  <!-- 内容 -->
+  <div class:list={[
+    'p-6 flex flex-col',
+    layout === 'horizontal' ? 'md:w-3/5' : ''
+  ]}>
+    <span class="text-xs font-mono-code text-ochre-500 mb-2 tracking-wide">
+      {subtitle}
+    </span>
+    
+    <h3 class="font-serif-display text-xl font-bold text-charcoal-900 dark:text-cream-100 mb-3 group-hover:text-ochre-500 transition-colors">
+      {title}
+    </h3>
+    
+    <p class="text-sm text-charcoal-800/70 dark:text-cream-100/70 leading-relaxed mb-4 line-clamp-3">
+      {description}
+    </p>
+    
+    <!-- 标签 -->
+    <div class="flex flex-wrap gap-2 mt-auto">
+      {tags.map((tag) => (
+        <span class="tag text-ochre-600 dark:text-ochre-400">
+          {tag}
+        </span>
+      ))}
+    </div>
+    
+    <!-- 查看详情箭头 -->
+    <div class="mt-4 flex items-center text-sm text-ochre-500 font-medium opacity-0 group-hover:opacity-100 transition-opacity">
+      查看详情
+      <svg class="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+      </svg>
+    </div>
+  </div>
+</a>
