@@ -1,0 +1,269 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import Terminal3D from '../components/Terminal3D.astro';
+import { projects } from '../data/projects';
+
+// 取前3个项目作为精选
+const featuredProjects = projects.slice(0, 3);
+
+// 核心能力标签
+const coreSkills = [
+  'Agent 产品设计',
+  'AI 评测体系',
+  'Prompt Engineering',
+  'RAG 架构设计',
+  '用户研究',
+  '数据分析',
+  '产品规划',
+  '跨团队协作',
+  '大模型应用',
+  '多模态交互',
+  '需求分析',
+  '原型设计',
+];
+---
+
+<BaseLayout title="首页" description="AI产品经理个人作品集 - 用Agent思维解决真实问题">
+  <!-- Hero Section -->
+  <section class="relative min-h-[85vh] flex items-center">
+    <!-- 背景装饰 -->
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+      <div class="absolute top-20 right-0 w-96 h-96 bg-ochre-500/5 rounded-full blur-3xl"></div>
+      <div class="absolute bottom-20 left-0 w-80 h-80 bg-ochre-400/5 rounded-full blur-3xl"></div>
+    </div>
+    
+    <div class="max-w-7xl mx-auto px-6 lg:px-8 py-16 relative z-10">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+        <!-- 左侧：文字内容 -->
+        <div class="space-y-8">
+          <!-- 入场动画标签 -->
+          <div class="animate-fade-in-up animate-delay-100">
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-ochre-500/10 text-ochre-600 dark:text-ochre-400 border border-ochre-500/20">
+              <span class="w-2 h-2 bg-ochre-500 rounded-full mr-2 animate-pulse"></span>
+              正在寻找新机会
+            </span>
+          </div>
+          
+          <!-- 主标题 -->
+          <h1 class="animate-fade-in-up animate-delay-200 font-serif-display text-4xl sm:text-5xl lg:text-6xl font-bold text-charcoal-900 dark:text-cream-100 leading-tight">
+            AI 产品经理
+            <br />
+            <span class="text-ochre-500">用 Agent 思维</span>
+            <br />
+            解决真实问题
+          </h1>
+          
+          <!-- 副标题 -->
+          <p class="animate-fade-in-up animate-delay-300 text-lg text-charcoal-800/80 dark:text-cream-100/80 leading-relaxed max-w-lg">
+            我做的事情：让 AI 理解人，而不只是回答问题。
+            <span class="block mt-2 text-charcoal-800/60 dark:text-cream-100/60 italic text-base">
+              从 Agent 架构到评测体系，从 C 端工具到 B 端决策系统
+            </span>
+          </p>
+          
+          <!-- CTA 按钮 -->
+          <div class="animate-fade-in-up animate-delay-400 flex flex-wrap gap-4">
+            <a href="/projects" class="btn-primary">
+              查看项目作品
+              <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </a>
+            <a href="/contact" class="btn-secondary">
+              联系我
+            </a>
+          </div>
+          
+          <!-- 快速数据 -->
+          <div class="animate-fade-in-up animate-delay-500 grid grid-cols-3 gap-6 pt-8 border-t border-charcoal-900/10 dark:border-cream-100/10">
+            <div>
+              <div class="font-mono-code text-2xl font-bold text-ochre-500">3</div>
+              <div class="text-xs text-charcoal-800/60 dark:text-cream-100/60 mt-1">AI 项目经验</div>
+            </div>
+            <div>
+              <div class="font-mono-code text-2xl font-bold text-ochre-500">1套</div>
+              <div class="text-xs text-charcoal-800/60 dark:text-cream-100/60 mt-1">完整评测体系</div>
+            </div>
+            <div>
+              <div class="font-mono-code text-2xl font-bold text-ochre-500">985</div>
+              <div class="text-xs text-charcoal-800/60 dark:text-cream-100/60 mt-1">硕士学历</div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 右侧：3D终端视觉 -->
+        <div class="animate-fade-in-up animate-delay-300 relative">
+          <div class="relative max-w-md mx-auto">
+            <Terminal3D />
+          </div>
+          
+          <!-- 装饰性代码片段 -->
+          <div class="absolute -bottom-4 -left-4 bg-cream-50 dark:bg-dark-bg-900 border border-charcoal-900/10 dark:border-cream-100/10 rounded-lg px-4 py-2 shadow-lg hidden lg:block">
+            <code class="text-xs font-mono-code text-charcoal-800/70 dark:text-cream-100/70">
+              <span class="text-ochre-500">const</span> mission = <span class="text-green-600 dark:text-green-400">"make AI human"</span>
+            </code>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- 滚动提示 -->
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+      <svg class="w-6 h-6 text-charcoal-800/40 dark:text-cream-100/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+      </svg>
+    </div>
+  </section>
+
+  <!-- 精选项目 Section -->
+  <section class="py-20 lg:py-28">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+      <!-- Section Header -->
+      <div class="text-center mb-16 animate-on-scroll animate-fade-in-up">
+        <span class="text-sm font-mono-code text-ochre-500 tracking-widest uppercase">Featured Projects</span>
+        <h2 class="font-serif-display text-3xl lg:text-4xl font-bold text-charcoal-900 dark:text-cream-100 mt-3 mb-4">
+          精选项目作品
+        </h2>
+        <p class="text-charcoal-800/70 dark:text-cream-100/70 max-w-2xl mx-auto">
+          从 C 端自我认知工具到 B 端电商决策系统，再到全场景财税搜索。三个项目共同的线索：让 AI 真正理解用户所处的上下文。
+          <span class="text-ochre-500/70 italic">覆盖 Agent 架构、评测体系、RAG 搜索三大 AI 产品方向</span>
+        </p>
+      </div>
+      
+      <!-- 项目卡片网格 -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {featuredProjects.map((project, index) => (
+          <div class={`animate-on-scroll animate-fade-in-up animate-delay-${(index + 1) * 100}`}>
+            <ProjectCard
+              title={project.title}
+              subtitle={project.subtitle}
+              description={project.description}
+              tags={project.tags}
+              coverImage={project.coverImage}
+              slug={project.slug}
+            />
+          </div>
+        ))}
+      </div>
+      
+      <!-- 查看全部按钮 -->
+      <div class="text-center mt-12 animate-on-scroll animate-fade-in-up">
+        <a href="/projects" class="btn-secondary">
+          查看全部项目
+          <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 核心能力标签墙 Section -->
+  <section class="py-20 lg:py-28 bg-cream-50/50 dark:bg-dark-bg-900/30">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <!-- 左侧文字 -->
+        <div class="animate-on-scroll animate-fade-in-up">
+          <span class="text-sm font-mono-code text-ochre-500 tracking-widest uppercase">Core Capabilities</span>
+          <h2 class="font-serif-display text-3xl lg:text-4xl font-bold text-charcoal-900 dark:text-cream-100 mt-3 mb-6">
+            我的核心能力
+          </h2>
+          <p class="text-charcoal-800/70 dark:text-cream-100/70 leading-relaxed mb-8">
+            从产品战略到落地执行，从 AI 技术理解到用户体验设计，构建完整的 AI 产品能力矩阵。
+            <span class="block mt-2 text-ochre-500/70 italic">AI Coding + 核心技术 + 平台能力 + 产品设计，四项能力驱动完整闭环</span>
+          </p>
+          
+          <div class="space-y-4">
+            <div class="flex items-start">
+              <div class="w-10 h-10 rounded-lg bg-ochre-500/10 flex items-center justify-center flex-shrink-0">
+                <svg class="w-5 h-5 text-ochre-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                </svg>
+              </div>
+              <div class="ml-4">
+                <h3 class="font-medium text-charcoal-900 dark:text-cream-100">AI 产品思维</h3>
+                <p class="text-sm text-charcoal-800/60 dark:text-cream-100/60 mt-1">Agent 架构设计、大模型应用场景判断</p>
+              </div>
+            </div>
+            <div class="flex items-start">
+              <div class="w-10 h-10 rounded-lg bg-ochre-500/10 flex items-center justify-center flex-shrink-0">
+                <svg class="w-5 h-5 text-ochre-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>
+              </div>
+              <div class="ml-4">
+                <h3 class="font-medium text-charcoal-900 dark:text-cream-100">数据驱动决策</h3>
+                <p class="text-sm text-charcoal-800/60 dark:text-cream-100/60 mt-1">搭建评测体系、用数据验证产品假设</p>
+              </div>
+            </div>
+            <div class="flex items-start">
+              <div class="w-10 h-10 rounded-lg bg-ochre-500/10 flex items-center justify-center flex-shrink-0">
+                <svg class="w-5 h-5 text-ochre-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+              </div>
+              <div class="ml-4">
+                <h3 class="font-medium text-charcoal-900 dark:text-cream-100">用户价值导向</h3>
+                <p class="text-sm text-charcoal-800/60 dark:text-cream-100/60 mt-1">深入用户研究，让 AI 真正解决问题</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 右侧标签墙 -->
+        <div class="animate-on-scroll animate-fade-in-up animate-delay-200">
+          <div class="flex flex-wrap gap-3 justify-center lg:justify-end">
+            {coreSkills.map((skill, index) => (
+              <span 
+                class:list={[
+                  'px-4 py-2 rounded-full text-sm font-medium border transition-all hover:scale-105 cursor-default',
+                  index % 3 === 0 
+                    ? 'bg-ochre-500/10 text-ochre-600 dark:text-ochre-400 border-ochre-500/20' 
+                    : index % 3 === 1
+                    ? 'bg-charcoal-900/5 dark:bg-cream-100/5 text-charcoal-800 dark:text-cream-100 border-charcoal-900/10 dark:border-cream-100/10'
+                    : 'bg-transparent text-charcoal-800/70 dark:text-cream-100/70 border-charcoal-900/20 dark:border-cream-100/20'
+                ]}
+                style={`animation-delay: ${index * 50}ms`}
+              >
+                {skill}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 底部 CTA Section -->
+  <section class="py-20 lg:py-28">
+    <div class="max-w-4xl mx-auto px-6 lg:px-8 text-center">
+      <div class="animate-on-scroll animate-fade-in-up bg-gradient-to-br from-ochre-500/10 to-ochre-600/5 rounded-3xl p-12 lg:p-16 border border-ochre-500/20 relative overflow-hidden">
+        <!-- 装饰元素 -->
+        <div class="absolute top-0 right-0 w-64 h-64 bg-ochre-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+        <div class="absolute bottom-0 left-0 w-48 h-48 bg-ochre-400/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2"></div>
+        
+        <div class="relative z-10">
+          <h2 class="font-serif-display text-3xl lg:text-4xl font-bold text-charcoal-900 dark:text-cream-100 mb-4">
+            有项目想聊聊？
+          </h2>
+          <p class="text-charcoal-800/70 dark:text-cream-100/70 max-w-xl mx-auto mb-8">
+            无论是 AI 产品合作、职业机会，还是单纯想交流 Agent 产品心得，都欢迎联系我。
+          </p>
+          
+          <div class="flex flex-wrap justify-center gap-4">
+            <a href="/contact" class="btn-primary">
+              联系我
+              <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+            </a>
+            <a href="/resume.pdf" download class="btn-secondary">
+              下载简历
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

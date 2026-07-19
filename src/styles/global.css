@@ -1,0 +1,226 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 全局噪点纹理 - 复古印刷纸张感 */
+.noise-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+/* 暗黑模式噪点调整 */
+.dark .noise-overlay {
+  opacity: 0.06;
+}
+
+/* 基础样式 */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: theme('fontFamily.sans-body');
+  background-color: theme('colors.cream.100');
+  color: theme('colors.charcoal.900');
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.dark body {
+  background-color: theme('colors.dark-bg.950');
+  color: theme('colors.cream.100');
+}
+
+/* 标题衬线字体 */
+h1, h2, h3, h4, h5, h6 {
+  font-family: theme('fontFamily.serif-display');
+}
+
+/* 等宽字体用于数字和代码 */
+.font-mono-code {
+  font-family: theme('fontFamily.mono-code');
+}
+
+/* 卡片悬停效果 */
+.card-hover {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+.dark .card-hover:hover {
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+/* 细线条装饰 */
+.decorative-line {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, currentColor, transparent);
+  opacity: 0.2;
+}
+
+/* 入场动画延迟类 */
+.animate-delay-100 { animation-delay: 100ms; }
+.animate-delay-200 { animation-delay: 200ms; }
+.animate-delay-300 { animation-delay: 300ms; }
+.animate-delay-400 { animation-delay: 400ms; }
+.animate-delay-500 { animation-delay: 500ms; }
+.animate-delay-600 { animation-delay: 600ms; }
+
+/* 初始隐藏状态 */
+.animate-fade-in-up,
+.animate-fade-in {
+  opacity: 0;
+}
+
+/* 视差滚动容器 */
+.parallax-container {
+  perspective: 1px;
+  height: 100vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+/* 复古终端样式 */
+.terminal-window {
+  background: linear-gradient(180deg, #2D2A26 0%, #1A1815 100%);
+  border-radius: 8px;
+  box-shadow: 
+    0 0 0 1px rgba(212, 149, 106, 0.3),
+    0 20px 60px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.terminal-header {
+  background: linear-gradient(180deg, #3D3933 0%, #2D2A26 100%);
+  border-bottom: 1px solid rgba(212, 149, 106, 0.2);
+}
+
+.terminal-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+/* 页面切换过渡 */
+.page-transition-enter {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.page-transition-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+/* 占位图样式 */
+.placeholder-image {
+  background: linear-gradient(135deg, #E2D9C3 0%, #EDE7D8 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #8B7E6B;
+  font-size: 0.875rem;
+  font-style: italic;
+}
+
+.dark .placeholder-image {
+  background: linear-gradient(135deg, #2D2A26 0%, #1A1815 100%);
+  color: #6B655D;
+}
+
+/* 标签样式 */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border-radius: 9999px;
+  border: 1px solid currentColor;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
+
+.tag:hover {
+  opacity: 1;
+}
+
+/* 按钮基础样式 */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.5rem;
+  font-weight: 500;
+  background-color: theme('colors.ochre.500');
+  color: white;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: theme('colors.ochre.600');
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(196, 127, 78, 0.3);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.5rem;
+  font-weight: 500;
+  background-color: transparent;
+  color: theme('colors.charcoal.900');
+  border: 1px solid theme('colors.charcoal.900');
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.dark .btn-secondary {
+  color: theme('colors.cream.100');
+  border-color: theme('colors.cream.100');
+}
+
+.btn-secondary:hover {
+  background-color: theme('colors.charcoal.900');
+  color: theme('colors.cream.100');
+}
+
+.dark .btn-secondary:hover {
+  background-color: theme('colors.cream.100');
+  color: theme('colors.charcoal.900');
+}
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: theme('colors.cream.200');
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: theme('colors.dark-bg.900');
+}
+
+::-webkit-scrollbar-thumb {
+  background: theme('colors.ochre.400');
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: theme('colors.ochre.500');
+}

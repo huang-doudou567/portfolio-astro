@@ -1,0 +1,207 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+// 评测指标体系
+const evalMetrics = [
+  {
+    category: '能力维度',
+    metrics: ['任务完成率', '答案准确率', '推理能力', '工具调用正确率', '多轮对话一致性']
+  },
+  {
+    category: '效率维度',
+    metrics: ['首字响应时间', '整体耗时', 'Token 消耗', '重试率', '人工介入率']
+  },
+  {
+    category: '体验维度',
+    metrics: ['用户满意度', '对话自然度', '错误可理解性', '引导有效性', '学习成本']
+  },
+];
+
+// 闲鱼实战案例模块
+const xianyuModules = [
+  {
+    title: '模型优化',
+    desc: '制定对话好坏标准（相关性/合规性/诱导性），基于多轮会话日志挖掘意图歧义样本，反哺单轮模型理解能力。整合 Bad case 归因体系，优化后不良回复率降低 12%。'
+  },
+  {
+    title: '专题库建设',
+    desc: '针对产品参数、价格、库存等高频标准化问题构建结构化问答库，按行业/品类分层设计。通过难度分层、能力标签和偏序对比机制，建成模型横向能力评估体系，高频问题应答覆盖率达 95%。'
+  },
+  {
+    title: 'Agent 评估',
+    desc: '独立定义"有效引导"与"不良回复"判定边界，确立风控合规与用户体验双维标尺。构建标准化测试集，通过盲评量化任务完成率，推动售中意图识别率提升至 94%，无效回复率压降 18%。'
+  },
+  {
+    title: 'Prompt 工程',
+    desc: '独立编写 10 余套差异化 System Prompt，内置交易话术、底价风控及敏感词过滤等多重约束。高风险场景（价格越界/涉敏）拦截率达 98%，Prompt 迭代周期缩短 40%。'
+  },
+  {
+    title: '全链路监控',
+    desc: '全链路拆解"买家发起对话-沟通商品信息-议价-成交/失败"关键节点，定位询价流失及 AI 对话断层。定义人工接管熔断机制，构建涵盖开通率、复用率及 GMV 带动的评估指标体系。'
+  },
+  {
+    title: '评测方法论',
+    desc: '从单轮对话优化到多轮 Agent 评估，构建完整评测闭环。五维度分层评测框架——工具调用准确率、任务完成率、异常恢复能力、token 使用效率、人工接管率。'
+  },
+];
+
+// 成果数据
+const results = [
+  { label: '不良回复率', value: '↓12%' },
+  { label: '应答覆盖率', value: '95%' },
+  { label: '意图识别率', value: '94%' },
+  { label: '无效回复压降', value: '↓18%' },
+  { label: '高风险拦截率', value: '98%' },
+];
+---
+
+<BaseLayout title="AI评测体系" description="AI产品评测体系方法论与实战案例">
+  <!-- 页头 -->
+  <section class="py-16 lg:py-24">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+      <div class="max-w-3xl animate-fade-in-up">
+        <span class="text-sm font-mono-code text-ochre-500 tracking-widest uppercase">Evaluation System</span>
+        <h1 class="font-serif-display text-4xl lg:text-5xl font-bold text-charcoal-900 dark:text-cream-100 mt-3 mb-6">
+          AI 评测体系
+        </h1>
+        <p class="text-lg text-charcoal-800/70 dark:text-cream-100/70 leading-relaxed">
+          从 0 到 1 搭建完整的 AI 产品评测框架，用数据驱动产品迭代，让 AI 能力可量化、可优化、可验证。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 方法论框架图 -->
+  <section class="pb-16">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+      <div class="animate-on-scroll animate-fade-in-up">
+        <h2 class="font-serif-display text-2xl font-bold text-charcoal-900 dark:text-cream-100 mb-6 text-center">
+          方法论框架
+        </h2>
+        <div class="w-full min-h-[200px] rounded-2xl placeholder-image border border-charcoal-900/10 dark:border-cream-100/10 p-8">
+          <div class="text-center px-4">
+            <svg class="w-14 h-14 mx-auto mb-3 opacity-30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2" />
+            </svg>
+            <p class="text-sm text-charcoal-800/80 dark:text-cream-100/80 leading-relaxed max-w-xl mx-auto">
+              三层评估体系：自动化评测 + 人工抽样评测 + 用户反馈闭环，覆盖能力、效率、体验三大维度。
+              从单轮对话优化到多轮 Agent 评估，构建完整评测闭环。
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 评测指标体系 -->
+  <section class="py-16 bg-cream-50/50 dark:bg-dark-bg-900/30">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+      <div class="text-center mb-12 animate-on-scroll animate-fade-in-up">
+        <h2 class="font-serif-display text-2xl lg:text-3xl font-bold text-charcoal-900 dark:text-cream-100 mb-4">
+          评测指标体系
+        </h2>
+        <p class="text-charcoal-800/70 dark:text-cream-100/70 max-w-2xl mx-auto">
+          三大维度、十五项核心指标，构建全方位的 AI 产品评估矩阵
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {evalMetrics.map((group, index) => (
+          <div class={`animate-on-scroll animate-fade-in-up animate-delay-${index * 100}`}>
+            <div class="h-full p-6 rounded-2xl border border-charcoal-900/10 dark:border-cream-100/10 bg-cream-100/50 dark:bg-dark-bg-900/50">
+              <div class="flex items-center mb-6">
+                <span class="w-10 h-10 rounded-xl bg-ochre-500/10 text-ochre-500 flex items-center justify-center font-mono-code font-bold mr-3">
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+                <h3 class="font-serif-display text-lg font-bold text-charcoal-900 dark:text-cream-100">
+                  {group.category}
+                </h3>
+              </div>
+              <ul class="space-y-3">
+                {group.metrics.map((metric) => (
+                  <li class="flex items-center text-sm text-charcoal-800/80 dark:text-cream-100/80">
+                    <span class="w-1.5 h-1.5 rounded-full bg-ochre-500 mr-3"></span>
+                    {metric}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- 闲鱼实战案例 -->
+  <section class="py-16 lg:py-20">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+      <div class="text-center mb-12 animate-on-scroll animate-fade-in-up">
+        <span class="text-sm font-mono-code text-ochre-500 tracking-widest uppercase">Case Study</span>
+        <h2 class="font-serif-display text-2xl lg:text-3xl font-bold text-charcoal-900 dark:text-cream-100 mt-2 mb-4">
+          闲鱼实战案例
+        </h2>
+        <p class="text-charcoal-800/70 dark:text-cream-100/70 max-w-2xl mx-auto">
+          从模型优化到 Agent 评估，构建完整的评测闭环
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {xianyuModules.map((module, index) => (
+          <div class={`animate-on-scroll animate-fade-in-up animate-delay-${index * 50}`}>
+            <div class="h-full p-6 rounded-xl border border-charcoal-900/10 dark:border-cream-100/10 bg-cream-50/50 dark:bg-dark-bg-900/50 card-hover group">
+              <div class="flex items-center mb-4">
+                <span class="w-8 h-8 rounded-lg bg-ochre-500/10 text-ochre-500 flex items-center justify-center font-mono-code text-xs font-bold mr-3">
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+                <h3 class="font-medium text-charcoal-900 dark:text-cream-100 group-hover:text-ochre-500 transition-colors">
+                  {module.title}
+                </h3>
+              </div>
+              <p class="text-sm text-charcoal-800/70 dark:text-cream-100/70 leading-relaxed">
+                {module.desc}
+              </p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- 成果数据汇总 -->
+  <section class="py-16">
+    <div class="max-w-5xl mx-auto px-6 lg:px-8">
+      <div class="animate-on-scroll animate-fade-in-up bg-gradient-to-br from-ochre-500/10 via-transparent to-ochre-600/5 rounded-3xl p-8 lg:p-12 border border-ochre-500/20">
+        <h2 class="font-serif-display text-2xl font-bold text-charcoal-900 dark:text-cream-100 mb-8 text-center">
+          成果数据汇总
+        </h2>
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-6 lg:gap-8">
+          {results.map((item, index) => (
+            <div key={index} class="text-center">
+              <div class="font-mono-code text-3xl lg:text-4xl font-bold text-ochre-500 mb-2">
+                {item.value}
+              </div>
+              <div class="text-sm text-charcoal-800/70 dark:text-cream-100/70">
+                {item.label}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="py-16">
+    <div class="max-w-3xl mx-auto px-6 lg:px-8 text-center">
+      <p class="text-charcoal-800/70 dark:text-cream-100/70 mb-6">
+        想了解更多评测体系的搭建细节？
+      </p>
+      <a href="/thinking/agent-evaluation-framework" class="btn-primary inline-flex">
+        阅读完整方法论文章
+        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+        </svg>
+      </a>
+    </div>
+  </section>
+</BaseLayout>

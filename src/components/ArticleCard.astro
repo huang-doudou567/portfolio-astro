@@ -1,0 +1,58 @@
+---
+// 文章卡片组件
+interface Props {
+  title: string;
+  excerpt: string;
+  category: string;
+  date: string;
+  readTime: string;
+  slug: string;
+  size?: 'small' | 'medium';
+}
+
+const { title, excerpt, category, date, readTime, slug, size = 'medium' } = Astro.props;
+---
+
+<a 
+  href={`/thinking/${slug}`}
+  class:list={[
+    'group card-hover block rounded-xl overflow-hidden border border-charcoal-900/10 dark:border-cream-100/10 bg-cream-50/50 dark:bg-dark-bg-900/50 transition-all',
+    size === 'small' ? 'p-5' : 'p-6'
+  ]}
+>
+  <!-- 分类标签 -->
+  <div class="flex items-center justify-between mb-3">
+    <span class="text-xs font-medium px-2.5 py-1 rounded-full bg-ochre-500/10 text-ochre-600 dark:text-ochre-400">
+      {category}
+    </span>
+    <span class="text-xs text-charcoal-800/50 dark:text-cream-100/50 font-mono-code">
+      {readTime}
+    </span>
+  </div>
+  
+  <!-- 标题 -->
+  <h3 class:list={[
+    'font-serif-display font-bold text-charcoal-900 dark:text-cream-100 mb-2 group-hover:text-ochre-500 transition-colors',
+    size === 'small' ? 'text-lg' : 'text-xl'
+  ]}>
+    {title}
+  </h3>
+  
+  <!-- 摘要 -->
+  <p class="text-sm text-charcoal-800/70 dark:text-cream-100/70 leading-relaxed line-clamp-3 mb-4">
+    {excerpt}
+  </p>
+  
+  <!-- 底部信息 -->
+  <div class="flex items-center justify-between pt-3 border-t border-charcoal-900/5 dark:border-cream-100/5">
+    <span class="text-xs text-charcoal-800/50 dark:text-cream-100/50 font-mono-code">
+      {date}
+    </span>
+    <span class="text-sm text-ochre-500 font-medium flex items-center opacity-0 group-hover:opacity-100 transition-opacity">
+      阅读
+      <svg class="w-4 h-4 ml-1 transform group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+      </svg>
+    </span>
+  </div>
+</a>
