@@ -1,6 +1,8 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 
+const siteName = import.meta.env.PUBLIC_NAME;
+
 // 技能栈
 const skillGroups = [
   {
@@ -68,7 +70,7 @@ const awards = [
         <!-- 头像 -->
         <div class="flex-shrink-0">
           <div class="w-32 h-32 md:w-40 md:h-40 rounded-full border-4 border-ochre-500/20 overflow-hidden bg-cream-50 dark:bg-dark-bg-900">
-            <img src="/images/头像.jpg" alt="黄可欣" class="w-full h-full object-contain" />
+            <img src="/images/头像.jpg" alt={siteName} class="w-full h-full object-contain" />
           </div>
         </div>
 
@@ -76,7 +78,7 @@ const awards = [
         <div class="text-center md:text-left">
           <span class="text-sm font-mono-code text-ochre-500 tracking-widest uppercase">About Me</span>
           <h1 class="font-serif-display text-3xl md:text-4xl font-bold text-charcoal-900 dark:text-cream-100 mt-2 mb-2">
-            黄可欣
+            {siteName}
           </h1>
           <p class="text-lg text-charcoal-800/70 dark:text-cream-100/70 mb-4">
             AI 产品经理 · Agent 产品设计者
