@@ -9,6 +9,7 @@ interface Props {
 }
 
 const { title, description = 'AI Product Manager Portfolio' } = Astro.props;
+const siteName = import.meta.env.PUBLIC_NAME;
 ---
 
 <!DOCTYPE html>
@@ -17,7 +18,7 @@ const { title, description = 'AI Product Manager Portfolio' } = Astro.props;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
-    <title>{title} | 黄可欣 - AI 产品经理</title>
+    <title>{title} | {siteName} - AI 产品经理</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <script is:inline>
       // 暗黑模式初始化 - 防止闪烁

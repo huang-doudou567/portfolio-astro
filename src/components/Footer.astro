@@ -1,5 +1,5 @@
 ---
-// 页脚组件
+const siteName = import.meta.env.PUBLIC_NAME;
 ---
 
 <footer class="border-t border-charcoal-900/10 dark:border-cream-100/10 mt-20">
@@ -8,7 +8,7 @@
       <!-- Brand -->
       <div class="md:col-span-2">
         <h3 class="font-serif-display text-2xl font-bold text-charcoal-900 dark:text-cream-100 mb-3">
-          黄可欣
+          {siteName}
         </h3>
         <p class="text-charcoal-800/70 dark:text-cream-100/70 text-sm max-w-md leading-relaxed">
           AI 产品经理 · 用 Agent 思维解决真实问题。专注于 AI 产品设计、评测体系搭建与 Agent 应用落地。
@@ -57,7 +57,7 @@
     <!-- Bottom -->
     <div class="mt-12 pt-8 border-t border-charcoal-900/10 dark:border-cream-100/10 flex flex-col sm:flex-row justify-between items-center">
       <p class="text-charcoal-800/50 dark:text-cream-100/50 text-xs font-mono-code">
-        © 2025 黄可欣. Built with Astro + Tailwind CSS.
+        © 2025 {siteName}. Built with Astro + Tailwind CSS.
       </p>
       <p class="text-charcoal-800/40 dark:text-cream-100/40 text-xs mt-2 sm:mt-0">
         用 ❤️ 和 Agent 思维打造
