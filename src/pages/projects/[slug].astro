@@ -92,63 +92,70 @@ const screenshotSets: Record<string, { src: string; label: string }[]> = {
   <!-- 项目详情内容 -->
   <section class="py-16 lg:py-20">
     <div class="max-w-4xl mx-auto px-6 lg:px-8">
-      <!-- 项目背景 & 我的角色 -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16 animate-on-scroll animate-fade-in-up">
-        <div>
-          <h2 class="font-serif-display text-xl font-bold text-charcoal-900 dark:text-cream-100 mb-4 flex items-center">
-            <span class="w-8 h-0.5 bg-ochre-500 mr-3"></span>
-            项目背景
-          </h2>
-          {
-            project.background.split('\n\n').map((para, i) => (
-              <p class:list={["text-charcoal-800/80 dark:text-cream-100/80 leading-relaxed text-sm", i > 0 ? "mt-3" : ""]}>
-                {para}
-              </p>
-            ))
-          }
+
+      <!-- 项目信息栏：角色 + 时间 -->
+      <div class="flex flex-wrap gap-6 mb-12 animate-on-scroll animate-fade-in-up">
+        <div class="flex items-center gap-2 text-sm text-charcoal-800/70 dark:text-cream-100/70">
+          <svg class="w-4 h-4 text-ochre-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+          </svg>
+          {project.role}
         </div>
-        <div>
-          <h2 class="font-serif-display text-xl font-bold text-charcoal-900 dark:text-cream-100 mb-4 flex items-center">
-            <span class="w-8 h-0.5 bg-ochre-500 mr-3"></span>
-            我的角色
-          </h2>
-          <div class="space-y-3">
-            <div class="flex items-start">
-              <svg class="w-5 h-5 text-ochre-500 mt-0.5 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-              </svg>
-              <div>
-                <p class="text-sm font-medium text-charcoal-900 dark:text-cream-100">职责</p>
-                <p class="text-sm text-charcoal-800/70 dark:text-cream-100/70">{project.role}</p>
-              </div>
-            </div>
-            <div class="flex items-start">
-              <svg class="w-5 h-5 text-ochre-500 mt-0.5 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-              </svg>
-              <div>
-                <p class="text-sm font-medium text-charcoal-900 dark:text-cream-100">时间</p>
-                <p class="text-sm text-charcoal-800/70 dark:text-cream-100/70">{project.timeline}</p>
-              </div>
-            </div>
-          </div>
+        <div class="flex items-center gap-2 text-sm text-charcoal-800/70 dark:text-cream-100/70">
+          <svg class="w-4 h-4 text-ochre-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+          {project.timeline}
+        </div>
+      </div>
+
+      <!-- 一、背景：为什么会有这个产品 -->
+      <div class="mb-16 animate-on-scroll animate-fade-in-up">
+        <h2 class="font-serif-display text-2xl font-bold text-charcoal-900 dark:text-cream-100 mb-6 flex items-center">
+          <span class="w-8 h-0.5 bg-ochre-500 mr-3"></span>
+          项目背景
+        </h2>
+        <p class="text-xs font-mono-code text-ochre-500/70 mb-4 tracking-wide">为什么会有这个产品</p>
+        <div class="space-y-4">
+          {project.background.split('\n\n').map((para) => (
+            <p class="text-sm text-charcoal-800/80 dark:text-cream-100/80 leading-relaxed">
+              {para}
+            </p>
+          ))}
+        </div>
+      </div>
+
+      <!-- 二、问题：用户真正需要什么 -->
+      <div class="mb-16 animate-on-scroll animate-fade-in-up">
+        <h2 class="font-serif-display text-2xl font-bold text-charcoal-900 dark:text-cream-100 mb-6 flex items-center">
+          <span class="w-8 h-0.5 bg-ochre-500 mr-3"></span>
+          核心问题
+        </h2>
+        <p class="text-xs font-mono-code text-ochre-500/70 mb-4 tracking-wide">需要解决什么问题</p>
+        <div class="space-y-3">
+          {project.problem.split('\n\n').map((para) => (
+            <p class="text-sm text-charcoal-800/80 dark:text-cream-100/80 leading-relaxed">
+              {para}
+            </p>
+          ))}
         </div>
       </div>
 
       <!-- 分隔线 -->
       <div class="decorative-line my-12"></div>
 
-      <!-- 核心功能 -->
+      <!-- 三、功能定义：做什么 -->
       <div class="mb-16 animate-on-scroll animate-fade-in-up">
-        <h2 class="font-serif-display text-2xl font-bold text-charcoal-900 dark:text-cream-100 mb-8 text-center">
-          核心功能
+        <h2 class="font-serif-display text-2xl font-bold text-charcoal-900 dark:text-cream-100 mb-2 text-center">
+          功能定义
         </h2>
+        <p class="text-xs font-mono-code text-ochre-500/70 mb-8 text-center tracking-wide">因此定义什么功能</p>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
           {project.coreFeatures.map((feature, index) => (
             <div class="p-6 rounded-xl border border-charcoal-900/10 dark:border-cream-100/10 bg-cream-50/50 dark:bg-dark-bg-900/50 card-hover">
               <div class="flex flex-col">
-                <div class="flex items-center mb-3">
-                  <span class="w-8 h-8 rounded-lg bg-ochre-500/10 text-ochre-500 flex items-center justify-center font-mono-code text-sm font-bold mr-3 flex-shrink-0">
+                <div class="flex items-start mb-3">
+                  <span class="w-8 h-8 rounded-lg bg-ochre-500/10 text-ochre-500 flex items-center justify-center font-mono-code text-sm font-bold mr-3 flex-shrink-0 mt-0.5">
                     {String(index + 1).padStart(2, '0')}
                   </span>
                   <h3 class="font-serif-display text-base font-bold text-charcoal-900 dark:text-cream-100">
@@ -163,6 +170,71 @@ const screenshotSets: Record<string, { src: string; label: string }[]> = {
           ))}
         </div>
       </div>
+
+      <!-- 四、实现路径 -->
+      <div class="mb-16 animate-on-scroll animate-fade-in-up">
+        <h2 class="font-serif-display text-2xl font-bold text-charcoal-900 dark:text-cream-100 mb-6 flex items-center">
+          <span class="w-8 h-0.5 bg-ochre-500 mr-3"></span>
+          实现路径
+        </h2>
+        <p class="text-xs font-mono-code text-ochre-500/70 mb-4 tracking-wide">如何实现</p>
+        <div class="space-y-3">
+          {project.implementation.split('\n\n').map((para) => (
+            <p class="text-sm text-charcoal-800/80 dark:text-cream-100/80 leading-relaxed">
+              {para}
+            </p>
+          ))}
+        </div>
+      </div>
+
+      <!-- 五、前后对比 -->
+      {project.beforeAfter.length > 0 && (
+        <div class="mb-16 animate-on-scroll animate-fade-in-up">
+          <h2 class="font-serif-display text-2xl font-bold text-charcoal-900 dark:text-cream-100 mb-2 text-center">
+            结果与提升
+          </h2>
+          <p class="text-xs font-mono-code text-ochre-500/70 mb-8 text-center tracking-wide">之前 vs 之后</p>
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm border-collapse">
+              <thead>
+                <tr class="border-b border-charcoal-900/20 dark:border-cream-100/20">
+                  <th class="text-left py-3 px-4 font-medium text-charcoal-900 dark:text-cream-100 w-1/5">维度</th>
+                  <th class="text-left py-3 px-4 font-medium text-charcoal-800/60 dark:text-cream-100/60 w-2/5">之前</th>
+                  <th class="text-left py-3 px-4 font-medium text-ochre-600 dark:text-ochre-400 w-2/5">之后</th>
+                </tr>
+              </thead>
+              <tbody>
+                {project.beforeAfter.map((item) => (
+                  <tr class="border-b border-charcoal-900/10 dark:border-cream-100/10">
+                    <td class="py-3 px-4 font-medium text-charcoal-900 dark:text-cream-100">{item.dimension}</td>
+                    <td class="py-3 px-4 text-charcoal-800/60 dark:text-cream-100/60">{item.before}</td>
+                    <td class="py-3 px-4 text-ochre-600 dark:text-ochre-400">{item.after}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      <!-- 数据成果 -->
+      <div class="mb-16 animate-on-scroll animate-fade-in-up">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+          {project.results.map((result, index) => (
+            <div key={index} class="text-center p-6 rounded-xl bg-gradient-to-br from-ochre-500/10 to-transparent border border-ochre-500/20">
+              <div class="font-mono-code text-3xl lg:text-4xl font-bold text-ochre-500 mb-2">
+                {result.value}<span class="text-lg">{result.suffix || ''}</span>
+              </div>
+              <div class="text-sm text-charcoal-800/70 dark:text-cream-100/70">
+                {result.label}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- 分隔线 -->
+      <div class="decorative-line my-12"></div>
 
       <!-- 产品截图集 -->
       {
@@ -219,25 +291,6 @@ const screenshotSets: Record<string, { src: string; label: string }[]> = {
           </div>
         </div>
       )}
-
-      <!-- 数据成果 -->
-      <div class="mb-16 animate-on-scroll animate-fade-in-up">
-        <h2 class="font-serif-display text-2xl font-bold text-charcoal-900 dark:text-cream-100 mb-8 text-center">
-          数据成果
-        </h2>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-          {project.results.map((result, index) => (
-            <div key={index} class="text-center p-6 rounded-xl bg-gradient-to-br from-ochre-500/10 to-transparent border border-ochre-500/20">
-              <div class="font-mono-code text-3xl lg:text-4xl font-bold text-ochre-500 mb-2">
-                {result.value}<span class="text-lg">{result.suffix || ''}</span>
-              </div>
-              <div class="text-sm text-charcoal-800/70 dark:text-cream-100/70">
-                {result.label}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
 
       <!-- 分隔线 -->
       <div class="decorative-line my-12"></div>
