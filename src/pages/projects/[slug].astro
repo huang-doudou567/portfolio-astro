@@ -117,7 +117,7 @@ const screenshotSets: Record<string, { src: string; label: string }[]> = {
         </h2>
         <p class="text-xs font-mono-code text-ochre-500/70 mb-4 tracking-wide">为什么会有这个产品</p>
         <div class="space-y-4">
-          {project.background.split('\n\n').map((para) => (
+          {project.background.split(/\n+/).map((para) => (
             <p class="text-sm text-charcoal-800/80 dark:text-cream-100/80 leading-relaxed">
               {para}
             </p>
@@ -133,7 +133,7 @@ const screenshotSets: Record<string, { src: string; label: string }[]> = {
         </h2>
         <p class="text-xs font-mono-code text-ochre-500/70 mb-4 tracking-wide">需要解决什么问题</p>
         <div class="space-y-3">
-          {project.problem.split('\n\n').map((para) => (
+          {project.problem.split(/\n+/).map((para) => (
             <p class="text-sm text-charcoal-800/80 dark:text-cream-100/80 leading-relaxed">
               {para}
             </p>
@@ -162,9 +162,11 @@ const screenshotSets: Record<string, { src: string; label: string }[]> = {
                     {feature.title}
                   </h3>
                 </div>
-                <p class="text-sm text-charcoal-800/80 dark:text-cream-100/80 leading-relaxed">
-                  {feature.desc}
-                </p>
+                <div class="space-y-1">
+                  {feature.desc.split(/\n+/).map((line) => (
+                    <p class="text-sm text-charcoal-800/80 dark:text-cream-100/80 leading-relaxed">{line}</p>
+                  ))}
+                </div>
               </div>
             </div>
           ))}
@@ -179,7 +181,7 @@ const screenshotSets: Record<string, { src: string; label: string }[]> = {
         </h2>
         <p class="text-xs font-mono-code text-ochre-500/70 mb-4 tracking-wide">如何实现</p>
         <div class="space-y-3">
-          {project.implementation.split('\n\n').map((para) => (
+          {project.implementation.split(/\n+/).map((para) => (
             <p class="text-sm text-charcoal-800/80 dark:text-cream-100/80 leading-relaxed">
               {para}
             </p>
