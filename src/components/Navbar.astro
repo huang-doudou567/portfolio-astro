@@ -1,131 +1,102 @@
 ---
-// 导航栏组件
+// 导航栏组件 — CAD 风格
 const siteName = import.meta.env.PUBLIC_NAME;
 
 const navItems = [
   { label: '首页', href: '/' },
   { label: '项目', href: '/projects' },
   { label: '思考', href: '/thinking' },
-  { label: '关于我', href: '/about' },
   { label: '联系', href: '/contact' },
 ];
 
 const currentPath = Astro.url.pathname;
 ---
 
-<nav class="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-cream-100/80 dark:bg-dark-bg-950/80 border-b border-charcoal-900/10 dark:border-cream-100/10 transition-all duration-300">
+<nav class="fixed top-0 left-0 right-0 z-50 cad-panel rounded-none border-t-0 border-l-0 border-r-0 backdrop-blur-md">
   <div class="max-w-7xl mx-auto px-6 lg:px-8">
-    <div class="flex items-center justify-between h-16">
-      <!-- Logo -->
-      <a href="/" class="flex items-center space-x-2 group">
-        <span class="font-serif-display text-xl font-bold text-charcoal-900 dark:text-cream-100 group-hover:text-ochre-500 transition-colors">
+    <div class="flex items-center justify-between h-14">
+      <!-- Logo — CAD Draftsman style -->
+      <a href="/" class="flex items-center space-x-3 group">
+        <span class="font-serif-display text-lg font-bold text-blueprint-500 tracking-[-0.02em]">
           {siteName}
         </span>
-        <span class="text-xs text-charcoal-800/60 dark:text-cream-100/60 font-mono-code hidden sm:inline">
-          / ai-pm
+        <span class="text-[10px] text-blueprint-500/40 font-mono-code hidden sm:inline border-l border-blueprint-500/15 pl-3 leading-none">
+          REF: LC-2026.06
         </span>
       </a>
-      
-      <!-- Desktop Navigation -->
+
+      <!-- Desktop Nav -->
       <div class="hidden md:flex items-center space-x-1">
         {navItems.map((item) => {
-          const isActive = currentPath === item.href || 
-            (item.href !== '/' && currentPath.startsWith(item.href));
+          const isActive = currentPath === item.href || (item.href !== '/' && currentPath.startsWith(item.href));
           return (
-            <a
-              href={item.href}
-              class:list={[
-                'px-4 py-2 text-sm font-medium rounded-md transition-all duration-200',
-                isActive 
-                  ? 'text-ochre-500 bg-ochre-500/10' 
-                  : 'text-charcoal-800/80 dark:text-cream-100/80 hover:text-ochre-500 hover:bg-charcoal-900/5 dark:hover:bg-cream-100/5'
-              ]}
-            >
-              {item.label}
+            <a href={item.href} class:list={['px-4 py-1.5 text-xs font-mono-code tracking-wider transition-all duration-200',
+              isActive
+                ? 'text-white bg-blueprint-500 border border-blueprint-600'
+                : 'text-charcoal-800/60 border border-transparent hover:text-blueprint-500 hover:bg-blueprint-500/5 hover:border-blueprint-500/20']}>
+              <span class:list={[isActive ? 'opacity-100' : 'opacity-40']}>_</span>{item.label}
             </a>
           );
         })}
       </div>
-      
-      <!-- Right side: Theme toggle + Resume button -->
+
+      <!-- Right -->
       <div class="flex items-center space-x-3">
-        <!-- Theme Toggle -->
-        <button 
-          onclick="toggleTheme()"
-          class="p-2 rounded-md text-charcoal-800/70 dark:text-cream-100/70 hover:text-ochre-500 hover:bg-charcoal-900/5 dark:hover:bg-cream-100/5 transition-all"
-          aria-label="切换主题"
-        >
-          <!-- Sun icon (light mode) -->
-          <svg class="w-5 h-5 dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+        <!-- 系统状态指示器 -->
+        <div class="hidden sm:flex items-center space-x-2 text-[10px] font-mono-code text-charcoal-800/40 border-r border-blueprint-500/10 pr-4">
+          <span class="status-dot online"></span>
+          <span>SYS: ONLINE</span>
+          <span class="text-charcoal-800/20 mx-1">|</span>
+          <span>v2.4.1</span>
+        </div>
+
+        <!-- 搜索按钮 -->
+        <button id="searchBtn"
+          class="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-mono-code text-charcoal-800/50 border border-transparent hover:text-blueprint-500 hover:border-blueprint-500/20 transition-all group"
+          aria-label="搜索">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
-          <!-- Moon icon (dark mode) -->
-          <svg class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-          </svg>
+          <span class="text-[9px] px-1 py-0.5 rounded border border-charcoal-800/15 text-charcoal-800/30 group-hover:text-blueprint-500/50 group-hover:border-blueprint-500/20 transition-colors hidden lg:inline">⌘K</span>
         </button>
-        
-        <!-- Resume Button -->
-        <a 
-          href="/resume.pdf" download 
-          class="hidden sm:inline-flex items-center px-4 py-2 text-sm font-medium bg-ochre-500 text-white rounded-md hover:bg-ochre-600 transition-all hover:-translate-y-0.5 hover:shadow-lg hover:shadow-ochre-500/25"
-        >
-          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+
+        <a href="/resume.pdf" download
+          class="hidden sm:inline-flex items-center px-3.5 py-1.5 text-xs font-mono-code bg-blueprint-500 text-white border border-blueprint-600 hover:bg-blueprint-600 transition-all">
+          <svg class="w-3.5 h-3.5 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-          </svg>
-          简历下载
+          </svg>简历.PDF
         </a>
-        
-        <!-- Mobile menu button -->
-        <button 
-          id="mobile-menu-btn"
-          class="md:hidden p-2 rounded-md text-charcoal-800/70 dark:text-cream-100/70 hover:text-ochre-500"
-          onclick="toggleMobileMenu()"
-        >
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <button id="mobile-menu-btn" class="md:hidden p-2 text-charcoal-800/60 hover:text-blueprint-500 border border-transparent hover:border-blueprint-500/20" onclick="toggleMobileMenu()">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
           </svg>
         </button>
       </div>
     </div>
   </div>
-  
+
   <!-- Mobile Menu -->
-  <div id="mobile-menu" class="hidden md:hidden border-t border-charcoal-900/10 dark:border-cream-100/10">
+  <div id="mobile-menu" class="hidden md:hidden border-t border-blueprint-500/10">
     <div class="px-4 py-3 space-y-1">
       {navItems.map((item) => {
-        const isActive = currentPath === item.href || 
-          (item.href !== '/' && currentPath.startsWith(item.href));
+        const isActive = currentPath === item.href || (item.href !== '/' && currentPath.startsWith(item.href));
         return (
-          <a
-            href={item.href}
-            class:list={[
-              'block px-4 py-2 text-sm font-medium rounded-md transition-colors',
-              isActive 
-                ? 'text-ochre-500 bg-ochre-500/10' 
-                : 'text-charcoal-800/80 dark:text-cream-100/80 hover:text-ochre-500 hover:bg-charcoal-900/5 dark:hover:bg-cream-100/5'
-            ]}
-          >
-            {item.label}
+          <a href={item.href} class:list={['block px-4 py-2 text-xs font-mono-code tracking-wider transition-colors',
+            isActive ? 'text-white bg-blueprint-500' : 'text-charcoal-800/60 hover:text-blueprint-500 hover:bg-blueprint-500/5']}>
+            <span class:list={[isActive ? 'opacity-100' : 'opacity-40']}>_</span>{item.label}
           </a>
         );
       })}
-      <a 
-        href="/resume.pdf" download 
-        class="block mt-3 text-center px-4 py-2 text-sm font-medium bg-ochre-500 text-white rounded-md"
-      >
-        简历下载
-      </a>
+      <a href="/resume.pdf" download class="block mt-3 text-center px-4 py-2 text-xs font-mono-code bg-blueprint-500 text-white border border-blueprint-600">简历.PDF</a>
     </div>
   </div>
 </nav>
 
-<!-- 导航栏占位 -->
-<div class="h-16"></div>
+<!-- spacer -->
+<div class="h-14"></div>
 
 <script is:inline>
   function toggleMobileMenu() {
-    const menu = document.getElementById('mobile-menu');
-    menu.classList.toggle('hidden');
+    document.getElementById('mobile-menu').classList.toggle('hidden');
   }
 </script>

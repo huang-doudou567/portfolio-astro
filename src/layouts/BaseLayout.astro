@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
+import BackToTop from '../components/BackToTop.astro';
 
 interface Props {
   title: string;
@@ -20,42 +21,137 @@ const siteName = import.meta.env.PUBLIC_NAME;
     <meta name="description" content={description} />
     <title>{title} | {siteName} - AI 产品经理</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <script is:inline>
-      // 暗黑模式初始化 - 防止闪烁
-      (function() {
-        const theme = localStorage.getItem('theme');
-        if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-          document.documentElement.classList.add('dark');
-        }
-      })();
-    </script>
+    <link href="/pagefind/pagefind-ui.css" rel="stylesheet" />
   </head>
-  <body class="min-h-screen flex flex-col">
-    <!-- 噪点纹理覆盖层 -->
+  <body class="min-h-screen flex flex-col cad-grid text-charcoal-900">
+    <!-- 阅读进度条 -->
+    <div class="reading-progress" id="readingProgress"></div>
+
+    <!-- 噪点纹理 -->
     <div class="noise-overlay"></div>
-    
+
     <Navbar />
-    
+
     <main class="flex-grow">
       <slot />
     </main>
-    
+
     <Footer />
-    
+
+    <BackToTop />
+
+    <!-- 全局十字准线 — 克莱因蓝 -->
+    <div class="cad-crosshair" id="crosshairContainer">
+      <div class="cad-crosshair-h" id="crosshairH"></div>
+      <div class="cad-crosshair-v" id="crosshairV"></div>
+      <div class="cad-crosshair-center" id="crosshairCenter">
+        <svg width="24" height="24" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="5" fill="none" stroke="#002FA7" stroke-width="1.2" opacity="0.5"/>
+          <circle cx="12" cy="12" r="1.5" fill="#002FA7" opacity="0.4"/>
+          <line x1="12" y1="0" x2="12" y2="7" stroke="#002FA7" stroke-width="0.8" opacity="0.3"/>
+          <line x1="12" y1="17" x2="12" y2="24" stroke="#002FA7" stroke-width="0.8" opacity="0.3"/>
+          <line x1="0" y1="12" x2="7" y2="12" stroke="#002FA7" stroke-width="0.8" opacity="0.3"/>
+          <line x1="17" y1="12" x2="24" y2="12" stroke="#002FA7" stroke-width="0.8" opacity="0.3"/>
+        </svg>
+      </div>
+    </div>
+    <!-- 坐标显示（跟随光标） -->
+    <div class="cad-coords" id="coordDisplay">X: 0000  Y: 0000</div>
+
     <script is:inline>
-      // 主题切换逻辑
-      function toggleTheme() {
-        const html = document.documentElement;
-        const isDark = html.classList.toggle('dark');
-        localStorage.setItem('theme', isDark ? 'dark' : 'light');
-      }
-      
+      // ===== 阅读进度条 =====
+      (function() {
+        var bar = document.getElementById('readingProgress');
+        if (!bar) return;
+        function updateProgress() {
+          var scrollTop = window.scrollY;
+          var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+          if (docHeight <= 0) { bar.style.width = '0%'; return; }
+          var pct = Math.min(100, (scrollTop / docHeight) * 100);
+          bar.style.width = pct + '%';
+        }
+        window.addEventListener('scroll', updateProgress, { passive: true });
+        window.addEventListener('resize', updateProgress, { passive: true });
+        updateProgress();
+      })();
+
+      // 全局鼠标追踪 — 十字准线 + 坐标跟随光标
+      (function() {
+        const crosshairH = document.getElementById('crosshairH');
+        const crosshairV = document.getElementById('crosshairV');
+        const crosshairCenter = document.getElementById('crosshairCenter');
+        const coordDisplay = document.getElementById('coordDisplay');
+        let timeout;
+
+        function padCoord(n) {
+          return String(Math.max(0, Math.min(9999, Math.round(n)))).padStart(4, '0');
+        }
+
+        document.addEventListener('mousemove', function(e) {
+          const x = e.clientX;
+          const y = e.clientY;
+
+          // 更新十字线
+          if (crosshairH) crosshairH.style.top = y + 'px';
+          if (crosshairV) crosshairV.style.left = x + 'px';
+          if (crosshairCenter) {
+            crosshairCenter.style.top = (y - 12) + 'px';
+            crosshairCenter.style.left = (x - 12) + 'px';
+          }
+
+          // 坐标显示在光标右下方（偏移避免遮挡）
+          if (coordDisplay) {
+            coordDisplay.textContent = 'X: ' + padCoord(x) + '  Y: ' + padCoord(y);
+            coordDisplay.style.left = (x + 18) + 'px';
+            coordDisplay.style.top = (y + 14) + 'px';
+            coordDisplay.style.opacity = '1';
+          }
+
+          // 暴露坐标供 Mac LED 面板同步
+          window.__mouseX = x;
+          window.__mouseY = y;
+          // 触发自定义事件
+          window.dispatchEvent(new CustomEvent('mousemove-global', { detail: { x, y } }));
+
+          clearTimeout(timeout);
+          timeout = setTimeout(function() {
+            if (coordDisplay) coordDisplay.style.opacity = '0.3';
+          }, 5000);
+        });
+
+        document.addEventListener('mouseleave', function() {
+          if (coordDisplay) coordDisplay.style.opacity = '0';
+        });
+      })();
+
+      // ===== 搜索（Pagefind） =====
+      (function() {
+        var searchBtn = document.getElementById('searchBtn');
+        if (!searchBtn) return;
+        var pagefindLoaded = null;
+
+        searchBtn.addEventListener('click', async function() {
+          try {
+            if (!pagefindLoaded) {
+              pagefindLoaded = await import('/pagefind/pagefind.js');
+              await pagefindLoaded.init();
+            }
+            pagefindLoaded.show();
+          } catch(e) {
+            console.warn('Search not available:', e);
+          }
+        });
+
+        // 支持快捷键 Ctrl+K / Cmd+K
+        document.addEventListener('keydown', function(e) {
+          if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+            e.preventDefault();
+            searchBtn.click();
+          }
+        });
+      })();
+
       // 滚动入场动画
-      const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-      };
-      
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
@@ -63,8 +159,7 @@ const siteName = import.meta.env.PUBLIC_NAME;
             observer.unobserve(entry.target);
           }
         });
-      }, observerOptions);
-      
+      }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
       document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('.animate-on-scroll').forEach(el => {
           el.style.animationPlayState = 'paused';

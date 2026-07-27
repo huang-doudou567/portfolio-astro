@@ -2,29 +2,83 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ProjectCard from '../../components/ProjectCard.astro';
 import { projects } from '../../data/projects';
+
+// 维度定义（按技术/能力域划分）
+const projectDimensions = [
+  {
+    id: 'agent',
+    name: 'Agent 架构',
+    desc: '多 Agent 协作 · 工具调用 · 降级策略 · 记忆系统',
+    projectSlugs: ['your-world-editor', 'snack-selection-agent', 'tax-policy-search'],
+  },
+  {
+    id: 'rag',
+    name: 'RAG 与搜索引擎',
+    desc: '多源实时检索 · 硬约束信任体系 · NPC 法规库',
+    projectSlugs: ['tax-policy-search'],
+  },
+  {
+    id: 'evaluation',
+    name: 'AI 评测体系',
+    desc: '五维度评测 · 三层闭环 · Bad case 归因',
+    projectSlugs: ['your-world-editor', 'snack-selection-agent'],
+  },
+  {
+    id: 'product-design',
+    name: 'AI 产品设计',
+    desc: 'C 端体验设计 · B 端效率工具 · 跨平台产品规划',
+    projectSlugs: ['your-world-editor', 'snack-selection-agent', 'tax-policy-search'],
+  },
+];
 ---
 
 <BaseLayout title="项目作品" description="AI产品经理项目作品集">
   <!-- 页头 -->
-  <section class="py-16 lg:py-24">
+  <section class="py-16 lg:py-20">
     <div class="max-w-7xl mx-auto px-6 lg:px-8">
-      <div class="max-w-3xl animate-fade-in-up">
-        <span class="text-sm font-mono-code text-ochre-500 tracking-widest uppercase">Portfolio</span>
-        <h1 class="font-serif-display text-4xl lg:text-5xl font-bold text-charcoal-900 dark:text-cream-100 mt-3 mb-6">
+      <div class="animate-fade-in-up">
+        <div class="flex items-center gap-3 mb-4">
+          <span class="cad-badge">PORTFOLIO</span>
+          <span class="text-[10px] font-mono-code text-blueprint-500/30">PROJECTS</span>
+          <div class="flex-1 h-px bg-blueprint-500/10"></div>
+        </div>
+        <h1 class="font-serif-display text-4xl lg:text-5xl font-bold text-charcoal-900 mt-3 mb-4">
           项目作品
         </h1>
-        <p class="text-lg text-charcoal-800/70 dark:text-cream-100/70 leading-relaxed">
+        <p class="text-sm text-charcoal-800/70 leading-relaxed max-w-2xl mb-8">
           从 C 端创意工具到 B 端效率产品，每一个项目都是对 AI 产品边界的探索。
-          <span class="text-ochre-500/70 italic">C 端自我认知 · B 端电商决策 · 全场景财税搜索，三个项目三种场景</span>
+          <span class="text-blueprint-500/50 italic block mt-1 font-serif-display">C 端自我认知 · B 端电商决策 · 全场景财税搜索，三个项目三种场景</span>
         </p>
+
+        <!-- 视图切换器 -->
+        <div class="view-switcher" role="tablist" aria-label="视图切换">
+          <button class="view-switcher-btn view-switcher-active" data-view="card" role="tab" aria-selected="true">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+            </svg>
+            卡片视图
+          </button>
+          <button class="view-switcher-btn" data-view="table" role="tab" aria-selected="false">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+            </svg>
+            表格视图
+          </button>
+          <button class="view-switcher-btn" data-view="dimension" role="tab" aria-selected="false">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z" />
+            </svg>
+            维度视图
+          </button>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- 项目列表 -->
-  <section class="pb-20">
+  <!-- ===== 视图一：卡片视图 ===== -->
+  <section class="pb-8" data-view-content="card">
     <div class="max-w-7xl mx-auto px-6 lg:px-8">
-      <div class="space-y-8">
+      <div class="space-y-6">
         {projects.map((project, index) => (
           <div class={`animate-on-scroll animate-fade-in-up animate-delay-${index * 100}`}>
             <ProjectCard
@@ -35,10 +89,138 @@ import { projects } from '../../data/projects';
               coverImage={project.coverImage}
               slug={project.slug}
               layout="horizontal"
+              metrics={project.results}
             />
           </div>
         ))}
       </div>
     </div>
   </section>
+
+  <!-- ===== 视图二：表格视图 ===== -->
+  <section class="pb-8 hidden" data-view-content="table">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+      <div class="cad-panel-solid overflow-hidden animate-on-scroll animate-fade-in-up">
+        <div class="cad-titlebar">PROJECT REGISTER — COMPARISON VIEW</div>
+        <div class="overflow-x-auto">
+          <table class="cad-table">
+            <thead>
+              <tr>
+                <th>REF</th>
+                <th>项目名称</th>
+                <th>分类</th>
+                <th>核心技术</th>
+                <th>时间</th>
+                <th class="text-right">操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              {projects.map((p, i) => (
+                <tr class="cursor-pointer hover:bg-blueprint-500/[0.03]" onclick={`window.location='/projects/${p.slug}'`}>
+                  <td class="font-mono-code text-blueprint-500/60">{`PRJ-${String(i + 1).padStart(3, '0')}`}</td>
+                  <td class="font-medium text-charcoal-900">{p.title}</td>
+                  <td><span class="text-[10px] px-1.5 py-0.5 rounded-sm bg-blueprint-500/10 text-blueprint-600 font-mono-code">{p.category}</span></td>
+                  <td>
+                    <div class="flex flex-wrap gap-1">
+                      {p.tags.slice(0, 3).map((t) => (
+                        <span class="text-[10px] px-1 py-0.5 rounded-sm bg-blueprint-500/[0.06] text-blueprint-600/80 font-mono-code">{t}</span>
+                      ))}
+                    </div>
+                  </td>
+                  <td class="font-mono-code text-xs">{p.timeline}</td>
+                  <td class="text-right">
+                    <a href={`/projects/${p.slug}`} class="text-[10px] text-blueprint-500/60 font-mono-code hover:text-blueprint-500 transition-colors">
+                      OPEN →
+                    </a>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 视图三：维度视图 ===== -->
+  <section class="pb-20 hidden" data-view-content="dimension">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {projectDimensions.map((dim) => {
+          const dimProjects = projects.filter((p) => dim.projectSlugs.includes(p.slug));
+          if (dimProjects.length === 0) return null;
+          return (
+            <div class="cad-panel-solid p-6 animate-on-scroll animate-fade-in-up">
+              <div class="flex items-center gap-3 mb-4">
+                <span class="w-8 h-8 rounded-sm bg-blueprint-500/10 flex items-center justify-center text-sm flex-shrink-0">{dim.name.slice(0, 2)}</span>
+                <div>
+                  <h3 class="font-mono-code text-xs font-semibold text-blueprint-500 tracking-wider uppercase">{dim.name}</h3>
+                  <p class="text-[10px] text-charcoal-800/50 font-mono-code">{dim.desc}</p>
+                </div>
+              </div>
+              <div class="space-y-3">
+                {dimProjects.map((p) => (
+                  <a href={`/projects/${p.slug}`} class="block p-3 rounded-sm border border-blueprint-500/10 hover:border-blueprint-500/30 hover:bg-blueprint-500/[0.03] transition-all group">
+                    <div class="flex items-center justify-between">
+                      <div>
+                        <span class="text-sm font-medium text-charcoal-900 group-hover:text-blueprint-500 transition-colors">{p.title}</span>
+                        <span class="text-[10px] ml-2 px-1.5 py-0.5 rounded-sm bg-blueprint-500/10 text-blueprint-600 font-mono-code">{p.category}</span>
+                      </div>
+                      <svg class="w-4 h-4 text-blueprint-500/30 group-hover:text-blueprint-500/60 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                      </svg>
+                    </div>
+                    <p class="text-xs text-charcoal-800/60 mt-1 line-clamp-2">{p.description}</p>
+                  </a>
+                ))}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  </section>
 </BaseLayout>
+
+<script is:inline>
+  (function() {
+    var switcher = document.querySelector('.view-switcher');
+    if (!switcher) return;
+
+    var tabs = switcher.querySelectorAll('[data-view]');
+    var views = {};
+    tabs.forEach(function(tab) {
+      var viewId = tab.getAttribute('data-view');
+      views[viewId] = document.querySelector('[data-view-content="' + viewId + '"]');
+    });
+
+    function switchView(viewId) {
+      // 更新 tab 状态
+      tabs.forEach(function(t) {
+        var isActive = t.getAttribute('data-view') === viewId;
+        t.classList.toggle('view-switcher-active', isActive);
+        t.setAttribute('aria-selected', String(isActive));
+      });
+      // 切换视图显示
+      Object.keys(views).forEach(function(key) {
+        var el = views[key];
+        if (!el) return;
+        if (key === viewId) {
+          el.classList.remove('hidden');
+          // 触发滚动入场动画
+          el.querySelectorAll('.animate-on-scroll').forEach(function(a) {
+            a.style.animationPlayState = 'running';
+          });
+        } else {
+          el.classList.add('hidden');
+        }
+      });
+    }
+
+    tabs.forEach(function(tab) {
+      tab.addEventListener('click', function() {
+        switchView(tab.getAttribute('data-view'));
+      });
+    });
+  })();
+</script>

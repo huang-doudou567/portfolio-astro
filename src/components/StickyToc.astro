@@ -1,0 +1,135 @@
+---
+// 粘性侧栏目录组件
+// 用法：
+//   <StickyToc sections={tocSections} title="本页目录" />
+//
+// sections: { id: string; label: string; level?: number }[]
+//   id     — 对应目标元素的 HTML id（如 "bg" → <section id="bg">）
+//   label  — 目录显示的文字
+//   level  — 0 = 一级标题（默认），1 = 二级标题（缩进）
+
+interface TocItem {
+  id: string;
+  label: string;
+  level?: number;
+}
+
+interface Props {
+  sections: TocItem[];
+  title?: string;
+}
+
+const { sections, title = '本页目录' } = Astro.props;
+const hasSections = sections.length > 0;
+---
+
+{
+  hasSections && (
+    <aside class="toc-root" id="stickyToc" aria-label={title}>
+      <!-- 桌面版：侧边粘性栏 -->
+      <nav class="toc-desktop">
+        <div class="toc-desktop-inner">
+          <div class="toc-header">
+            <svg class="w-3.5 h-3.5 text-blueprint-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+            <span class="toc-title">{title}</span>
+          </div>
+          <ul class="toc-list">
+            {sections.map((section) => (
+              <li class:list={['toc-item', section.level === 1 ? 'toc-item-nested' : '']}>
+                <a href={`#${section.id}`} class="toc-link" data-toc-id={section.id}>
+                  {section.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </nav>
+
+      <!-- 移动版：可折叠面板 -->
+      <div class="toc-mobile">
+        <button class="toc-mobile-toggle" id="tocMobileToggle" aria-expanded="false" aria-controls="tocMobileBody">
+          <svg class="w-4 h-4 text-blueprint-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+          <span class="toc-title">{title}</span>
+          <svg class="w-3.5 h-3.5 text-blueprint-500/50 ml-auto transition-transform duration-200 toc-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+        <div class="toc-mobile-body" id="tocMobileBody" hidden>
+          <ul class="toc-list">
+            {sections.map((section) => (
+              <li class:list={['toc-item', section.level === 1 ? 'toc-item-nested' : '']}>
+                <a href={`#${section.id}`} class="toc-link" data-toc-id={section.id}>
+                  {section.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </aside>
+  )
+}
+
+<script is:inline>
+  (function() {
+    var tocRoot = document.getElementById('stickyToc');
+    if (!tocRoot) return;
+
+    // ===== 当前章节高亮（IntersectionObserver） =====
+    var tocLinks = tocRoot.querySelectorAll('[data-toc-id]');
+    var sectionIds = Array.from(tocLinks).map(function(link) {
+      return link.getAttribute('data-toc-id');
+    });
+
+    // 收集所有目标元素
+    var targets = sectionIds.map(function(id) {
+      return document.getElementById(id);
+    }).filter(Boolean);
+
+    if (targets.length > 0 && 'IntersectionObserver' in window) {
+      var observer = new IntersectionObserver(function(entries) {
+        // 找出当前可见比例最高的 section
+        var visible = entries
+          .filter(function(e) { return e.isIntersecting; })
+          .sort(function(a, b) { return b.intersectionRatio - a.intersectionRatio; });
+
+        if (visible.length > 0) {
+          var activeId = visible[0].target.id;
+          tocLinks.forEach(function(link) {
+            link.classList.remove('toc-link-active');
+            if (link.getAttribute('data-toc-id') === activeId) {
+              link.classList.add('toc-link-active');
+            }
+          });
+        }
+      }, {
+        rootMargin: '-80px 0px -60% 0px',
+        threshold: [0, 0.25, 0.5, 0.75, 1],
+      });
+
+      targets.forEach(function(el) { observer.observe(el); });
+    }
+
+    // ===== 移动端折叠 =====
+    var toggleBtn = document.getElementById('tocMobileToggle');
+    var mobileBody = document.getElementById('tocMobileBody');
+    if (toggleBtn && mobileBody) {
+      toggleBtn.addEventListener('click', function() {
+        var expanded = toggleBtn.getAttribute('aria-expanded') === 'true';
+        toggleBtn.setAttribute('aria-expanded', String(!expanded));
+        mobileBody.hidden = expanded;
+        // 点击章节后自动折叠
+        mobileBody.querySelectorAll('.toc-link').forEach(function(link) {
+          link.addEventListener('click', function() {
+            toggleBtn.setAttribute('aria-expanded', 'false');
+            mobileBody.hidden = true;
+          });
+        });
+      });
+    }
+  })();
+</script>

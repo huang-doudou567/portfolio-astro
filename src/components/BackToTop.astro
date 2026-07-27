@@ -1,0 +1,43 @@
+---
+// 回到顶部浮动按钮 — 滚动超过 300px 后显示
+---
+
+<button
+  id="backToTopBtn"
+  class="fixed bottom-8 right-8 z-[9997] w-10 h-10 flex items-center justify-center
+         rounded-sm border border-blueprint-500/20 bg-white/90
+         text-blueprint-500 shadow-lg shadow-blueprint-500/10
+         opacity-0 translate-y-4 pointer-events-none
+         transition-all duration-300 ease-out
+         hover:bg-blueprint-500 hover:text-white hover:border-blueprint-600 hover:shadow-blueprint-500/25
+         focus:outline-none focus:ring-2 focus:ring-blueprint-500/40"
+  aria-label="回到顶部"
+>
+  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
+  </svg>
+</button>
+
+<script is:inline>
+  (function() {
+    var btn = document.getElementById('backToTopBtn');
+    if (!btn) return;
+
+    var scrollHandler = function() {
+      if (window.scrollY > 300) {
+        btn.classList.remove('opacity-0', 'translate-y-4', 'pointer-events-none');
+        btn.classList.add('opacity-100', 'translate-y-0', 'pointer-events-auto');
+      } else {
+        btn.classList.remove('opacity-100', 'translate-y-0', 'pointer-events-auto');
+        btn.classList.add('opacity-0', 'translate-y-4', 'pointer-events-none');
+      }
+    };
+
+    window.addEventListener('scroll', scrollHandler, { passive: true });
+    scrollHandler();
+
+    btn.addEventListener('click', function() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  })();
+</script>

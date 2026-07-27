@@ -8,45 +8,30 @@ const teardowns = getArticlesByCategory('产品拆解');
 ---
 
 <BaseLayout title="思考" description="AI产品思考与方法论文章">
-  <!-- 页头 -->
   <section class="py-16 lg:py-24">
     <div class="max-w-7xl mx-auto px-6 lg:px-8">
       <div class="max-w-3xl animate-fade-in-up">
-        <span class="text-sm font-mono-code text-ochre-500 tracking-widest uppercase">Thinking</span>
-        <h1 class="font-serif-display text-4xl lg:text-5xl font-bold text-charcoal-900 dark:text-cream-100 mt-3 mb-6">
-          思考
-        </h1>
-        <p class="text-lg text-charcoal-800/70 dark:text-cream-100/70 leading-relaxed">
-          关于 AI 产品、行业趋势、产品方法论的思考与沉淀。
-        </p>
+        <span class="text-sm font-mono-code text-blueprint-500 tracking-widest uppercase">Thinking</span>
+        <h1 class="font-serif-display text-4xl lg:text-5xl font-bold text-charcoal-900 mt-3 mb-6">思考</h1>
+        <p class="text-lg text-charcoal-800/70 leading-relaxed">关于 AI 产品、行业趋势、产品方法论的思考与沉淀。</p>
       </div>
     </div>
   </section>
 
-  <!-- 行业观察 - quote 卡片墙 -->
   <section class="pb-16">
     <div class="max-w-7xl mx-auto px-6 lg:px-8">
       <div class="flex items-center justify-between mb-8 animate-on-scroll animate-fade-in-up">
         <div>
-          <h2 class="font-serif-display text-2xl font-bold text-charcoal-900 dark:text-cream-100">
-            行业观察
-          </h2>
-          <p class="text-sm text-charcoal-800/60 dark:text-cream-100/60 mt-1">
-            来自项目实践的一线洞察
-          </p>
+          <h2 class="font-serif-display text-2xl font-bold text-charcoal-900">行业观察</h2>
+          <p class="text-sm text-charcoal-800/60 mt-1">来自项目实践的一线洞察</p>
         </div>
       </div>
-
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {observations.map((obs, index) => (
           <div class={`animate-on-scroll animate-fade-in-up animate-delay-${(index % 3) * 100 + 100}`}>
-            <div class="h-full p-6 rounded-xl border border-charcoal-900/10 dark:border-cream-100/10 bg-cream-50/50 dark:bg-dark-bg-900/50 card-hover flex flex-col justify-between">
-              <p class="text-sm text-charcoal-800/80 dark:text-cream-100/80 leading-relaxed italic mb-4 font-serif-display">
-                "{obs.quote}"
-              </p>
-              <p class="text-xs text-charcoal-800/50 dark:text-cream-100/50 font-mono-code">
-                — {obs.source}
-              </p>
+            <div class="h-full p-6 rounded-xl border border-blueprint-500/10 bg-white card-hover flex flex-col justify-between">
+              <p class="text-sm text-charcoal-800/80 leading-relaxed italic mb-4 font-serif-display">"{obs.quote}"</p>
+              <p class="text-xs text-charcoal-800/50 font-mono-code">— {obs.source}</p>
             </div>
           </div>
         ))}
@@ -54,62 +39,36 @@ const teardowns = getArticlesByCategory('产品拆解');
     </div>
   </section>
 
-  <!-- 产品方法论 -->
-  <section class="py-16 bg-cream-50/50 dark:bg-dark-bg-900/30">
+  <section class="py-16 bg-blueprint-500/[0.03]">
     <div class="max-w-7xl mx-auto px-6 lg:px-8">
       <div class="flex items-center justify-between mb-8 animate-on-scroll animate-fade-in-up">
         <div>
-          <h2 class="font-serif-display text-2xl font-bold text-charcoal-900 dark:text-cream-100">
-            产品方法论
-          </h2>
-          <p class="text-sm text-charcoal-800/60 dark:text-cream-100/60 mt-1">
-            沉淀可复用的 AI 产品设计方法与框架
-          </p>
+          <h2 class="font-serif-display text-2xl font-bold text-charcoal-900">产品方法论</h2>
+          <p class="text-sm text-charcoal-800/60 mt-1">沉淀可复用的 AI 产品设计方法与框架</p>
         </div>
       </div>
-
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         {methodologies.map((article, index) => (
           <div class={`animate-on-scroll animate-fade-in-up animate-delay-${index * 100 + 100}`}>
-            <ArticleCard
-              title={article.title}
-              excerpt={article.excerpt}
-              category={article.category}
-              date={article.date}
-              readTime={article.readTime}
-              slug={article.slug}
-            />
+            <ArticleCard title={article.title} excerpt={article.excerpt} category={article.category} date={article.date} readTime={article.readTime} slug={article.slug} />
           </div>
         ))}
       </div>
     </div>
   </section>
 
-  <!-- 产品拆解 -->
   <section class="py-16">
     <div class="max-w-7xl mx-auto px-6 lg:px-8">
       <div class="flex items-center justify-between mb-8 animate-on-scroll animate-fade-in-up">
         <div>
-          <h2 class="font-serif-display text-2xl font-bold text-charcoal-900 dark:text-cream-100">
-            产品拆解
-          </h2>
-          <p class="text-sm text-charcoal-800/60 dark:text-cream-100/60 mt-1">
-            拆解优秀 AI 产品，学习产品设计思路
-          </p>
+          <h2 class="font-serif-display text-2xl font-bold text-charcoal-900">产品拆解</h2>
+          <p class="text-sm text-charcoal-800/60 mt-1">拆解优秀 AI 产品，学习产品设计思路</p>
         </div>
       </div>
-
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         {teardowns.map((article, index) => (
           <div class={`animate-on-scroll animate-fade-in-up animate-delay-${index * 100 + 100}`}>
-            <ArticleCard
-              title={article.title}
-              excerpt={article.excerpt}
-              category={article.category}
-              date={article.date}
-              readTime={article.readTime}
-              slug={article.slug}
-            />
+            <ArticleCard title={article.title} excerpt={article.excerpt} category={article.category} date={article.date} readTime={article.readTime} slug={article.slug} />
           </div>
         ))}
       </div>

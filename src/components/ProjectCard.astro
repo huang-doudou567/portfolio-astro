@@ -1,5 +1,6 @@
 ---
-// 项目卡片组件
+// 项目卡片组件 — 高密度版
+// 图片缩略化，描述完整展示，CTA 始终可见
 interface Props {
   title: string;
   subtitle: string;
@@ -8,69 +9,86 @@ interface Props {
   coverImage: string;
   slug: string;
   layout?: 'horizontal' | 'vertical';
+  metrics?: { label: string; value: string; suffix?: string }[];
 }
 
-const { title, subtitle, description, tags, coverImage, slug, layout = 'vertical' } = Astro.props;
+const { title, subtitle, description, tags, slug, layout = 'vertical', metrics = [] } = Astro.props;
+const descriptionText = description.length > 120 ? description.slice(0, 120) + '…' : description;
 
-// 封面图映射
 const coverImages: Record<string, string> = {
   'your-world-editor': '/images/projects/1封面面板.jpg',
   'snack-selection-agent': '/images/projects/1-封面-数据面板.jpg',
   'tax-policy-search': '/images/projects/1封面-搜索面板.jpg',
 };
+
+const coverSrc = coverImages[slug] || '';
+const showMetrics = metrics.length > 0;
 ---
 
-<a 
+<a
   href={`/projects/${slug}`}
   class:list={[
-    'group card-hover block rounded-xl overflow-hidden border border-charcoal-900/10 dark:border-cream-100/10 bg-cream-50/50 dark:bg-dark-bg-900/50',
-    layout === 'horizontal' ? 'flex flex-col md:flex-row' : ''
+    'group card-hover block rounded-sm overflow-hidden border border-blueprint-500/10 bg-white/90 transition-all',
+    layout === 'horizontal' ? 'flex flex-col sm:flex-row' : ''
   ]}
 >
-  <!-- 封面图 -->
+  <!-- 缩略图 -->
+  {
+    coverSrc ? (
+      <div class:list={[
+        'overflow-hidden bg-blueprint-500/[0.04] flex-shrink-0',
+        layout === 'horizontal' ? 'w-full sm:w-24 sm:h-24' : 'w-full h-36'
+      ]}>
+        <img src={coverSrc} alt={title} class="w-full h-full object-contain p-1" loading="lazy" />
+      </div>
+    ) : null
+  }
+
+  <!-- 内容区 -->
   <div class:list={[
-    'overflow-hidden bg-charcoal-900/5 dark:bg-cream-100/5',
-    layout === 'horizontal' ? 'w-full md:w-2/5 h-48 md:h-auto' : 'w-full h-56'
+    'flex flex-col flex-1 min-w-0',
+    layout === 'horizontal' ? 'p-4 sm:pl-4' : 'p-5'
   ]}>
-    {
-      coverImages[slug]
-        ? <img src={coverImages[slug]} alt={title} class="w-full h-full object-contain p-1" loading="lazy" />
-        : <div class="w-full h-full flex items-center justify-center text-xs text-charcoal-800/40">暂无封面</div>
-    }
-  </div>
-  
-  <!-- 内容 -->
-  <div class:list={[
-    'p-6 flex flex-col',
-    layout === 'horizontal' ? 'md:w-3/5' : ''
-  ]}>
-    <span class="text-xs font-mono-code text-ochre-500 mb-2 tracking-wide">
-      {subtitle}
-    </span>
-    
-    <h3 class="font-serif-display text-xl font-bold text-charcoal-900 dark:text-cream-100 mb-3 group-hover:text-ochre-500 transition-colors">
-      {title}
-    </h3>
-    
-    <p class="text-sm text-charcoal-800/70 dark:text-cream-100/70 leading-relaxed mb-4 line-clamp-3">
-      {description}
-    </p>
-    
-    <!-- 标签 -->
-    <div class="flex flex-wrap gap-2 mt-auto">
-      {tags.map((tag) => (
-        <span class="tag text-ochre-600 dark:text-ochre-400">
-          {tag}
-        </span>
-      ))}
+    <!-- 顶栏：分类 + 标题 -->
+    <div class:list={[
+      layout === 'horizontal' ? 'sm:flex sm:items-center sm:gap-2' : ''
+    ]}>
+      <span class="inline-block text-[10px] font-mono-code text-blueprint-500 tracking-wide uppercase leading-tight">
+        {subtitle}
+      </span>
+      <h3 class:list={[
+        'font-serif-display font-bold text-charcoal-900 group-hover:text-blueprint-500 transition-colors',
+        layout === 'horizontal' ? 'text-base sm:mt-0' : 'text-lg mt-1'
+      ]}>
+        {title}
+      </h3>
     </div>
-    
-    <!-- 查看详情箭头 -->
-    <div class="mt-4 flex items-center text-sm text-ochre-500 font-medium opacity-0 group-hover:opacity-100 transition-opacity">
-      查看详情
-      <svg class="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-      </svg>
+
+    <!-- 描述 -->
+    <p class="text-xs text-charcoal-800/70 leading-relaxed mt-1.5 mb-2.5">
+      {descriptionText}
+    </p>
+
+    <!-- 底部行：标签 + CTA -->
+    <div class="flex items-center justify-between mt-auto pt-1.5 border-t border-blueprint-500/10">
+      <div class="flex flex-wrap gap-1.5 min-w-0 overflow-hidden">
+        {tags.slice(0, layout === 'horizontal' ? 3 : 4).map((tag) => (
+          <span class="text-[9px] px-1.5 py-0.5 rounded-sm border border-blueprint-500/15 text-blueprint-600 bg-blueprint-500/[0.04] font-mono-code whitespace-nowrap">
+            {tag}
+          </span>
+        ))}
+        {tags.length > (layout === 'horizontal' ? 3 : 4) && (
+          <span class="text-[9px] px-1.5 py-0.5 text-charcoal-800/40 font-mono-code">+{tags.length - (layout === 'horizontal' ? 3 : 4)}</span>
+        )}
+      </div>
+
+      <!-- 始终可见的 CTA -->
+      <span class="flex items-center text-[10px] text-blueprint-500 font-mono-code flex-shrink-0 ml-2 transition-all group-hover:opacity-100">
+        <span class="border-b border-blueprint-500/30">详情</span>
+        <svg class="w-3 h-3 ml-0.5 transform group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+        </svg>
+      </span>
     </div>
   </div>
 </a>

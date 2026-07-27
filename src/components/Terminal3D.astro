@@ -1,58 +1,44 @@
 ---
 // 复古终端电脑 3D 视觉组件
-// 使用 CSS 3D 模拟复古终端效果
 ---
 
 <div class="relative w-full h-full perspective-1000">
-  <!-- 终端电脑主体 -->
   <div class="relative animate-float" style="transform-style: preserve-3d;">
-    <!-- 显示器外框 -->
     <div class="relative w-full aspect-[4/3] terminal-window p-3" style="transform: rotateY(-5deg) rotateX(3deg);">
-      <!-- 顶部状态栏 -->
       <div class="terminal-header rounded-t px-3 py-2 flex items-center space-x-2 -mx-3 -mt-3 mb-3">
         <div class="terminal-dot bg-red-400"></div>
         <div class="terminal-dot bg-yellow-400"></div>
         <div class="terminal-dot bg-green-400"></div>
-        <span class="ml-2 text-xs text-cream-100/50 font-mono-code">terminal ~ ai-pm</span>
+        <span class="ml-2 text-xs text-blueprint-300/80 font-mono-code">terminal ~ ai-pm</span>
       </div>
-      
-      <!-- 屏幕内容 -->
+
       <div class="h-full rounded bg-charcoal-950 p-4 font-mono-code text-xs leading-relaxed overflow-hidden">
-        <!-- 终端文字 -->
-        <div class="text-green-400/80 space-y-1">
-          <p><span class="text-ochre-400">$</span> whoami</p>
-          <p class="text-cream-100/70">huangdoudou</p>
-          <p class="mt-2"><span class="text-ochre-400">$</span> cat role.txt</p>
-          <p class="text-cream-100/70">AI Product Manager</p>
-          <p class="text-cream-100/70">Agent Architect</p>
-          <p class="mt-2"><span class="text-ochre-400">$</span> ./skills --list</p>
-          <p class="text-cream-100/60">▸ Agent Design</p>
-          <p class="text-cream-100/60">▸ Eval Systems</p>
-          <p class="text-cream-100/60">▸ Prompt Eng.</p>
-          <p class="mt-2"><span class="text-ochre-400">$</span> <span class="inline-block w-2 h-4 bg-green-400/80 animate-pulse align-middle"></span></p>
+        <div class="text-blueprint-300/80 space-y-1">
+          <p><span class="text-blueprint-400">$</span> whoami</p>
+          <p class="text-blueprint-200/70">huangdoudou</p>
+          <p class="mt-2"><span class="text-blueprint-400">$</span> cat role.txt</p>
+          <p class="text-blueprint-200/70">AI Product Manager</p>
+          <p class="text-blueprint-200/70">Agent Architect</p>
+          <p class="mt-2"><span class="text-blueprint-400">$</span> ./skills --list</p>
+          <p class="text-blueprint-200/60">▸ Agent Design</p>
+          <p class="text-blueprint-200/60">▸ Eval Systems</p>
+          <p class="text-blueprint-200/60">▸ Prompt Eng.</p>
+          <p class="mt-2"><span class="text-blueprint-400">$</span> <span class="inline-block w-2 h-4 bg-blueprint-300/80 animate-pulse align-middle"></span></p>
         </div>
-        
-        <!-- 扫描线效果 -->
         <div class="absolute inset-0 pointer-events-none bg-gradient-to-b from-transparent via-transparent to-charcoal-950/30"></div>
       </div>
     </div>
-    
-    <!-- 底座阴影 -->
     <div class="absolute -bottom-4 left-1/2 -translate-x-1/2 w-3/4 h-4 bg-black/20 blur-xl rounded-full"></div>
   </div>
-  
-  <!-- 装饰性浮动元素 -->
-  <div class="absolute -top-4 -right-4 w-8 h-8 border-2 border-ochre-400/30 rounded-full animate-float animate-delay-300"></div>
-  <div class="absolute -bottom-2 -left-6 w-6 h-6 bg-ochre-500/20 rounded-lg animate-float animate-delay-500"></div>
-  
-  <!-- 装饰线条 -->
+
+  <div class="absolute -top-4 -right-4 w-8 h-8 border-2 border-blueprint-400/30 rounded-full animate-float animate-delay-300"></div>
+  <div class="absolute -bottom-2 -left-6 w-6 h-6 bg-blueprint-500/20 rounded-lg animate-float animate-delay-500"></div>
+
   <svg class="absolute -bottom-8 left-0 w-full h-8 opacity-20" viewBox="0 0 200 20" preserveAspectRatio="none">
-    <path d="M0,10 Q50,0 100,10 T200,10" stroke="currentColor" stroke-width="1" fill="none" class="text-ochre-500"/>
+    <path d="M0,10 Q50,0 100,10 T200,10" stroke="currentColor" stroke-width="1" fill="none" class="text-blueprint-500"/>
   </svg>
 </div>
 
 <style>
-  .perspective-1000 {
-    perspective: 1000px;
-  }
+  .perspective-1000 { perspective: 1000px; }
 </style>

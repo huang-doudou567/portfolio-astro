@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aptos Design System — Playground</title>
+<style>
+  :root {
+    --pure-white: #fffffa; --white: #f9f9f0; --cream: #efecca; --sand: #ccc5a3;
+    --tan: #9d937c; --ash: #3d3b34; --graphite: #2f2d28; --coal: #21201c;
+    --ink: #171612; --black: #0f0e0b; --mint: #d5fad3; --blue: #badbee; --coral: #f86;
+    --surface-100: #f9f9f0; --surface-200: #efecca; --surface-300: #ccc5a3; --surface-400: #9d937c;
+    --inverted-100: #0f0e0b; --inverted-200: #171612; --inverted-300: #21201c; --inverted-400: #3d3b34;
+    --border: #00000026;
+    --accent: var(--coral);
+    --spacing: 5px;
+    --nav-h: 56px;
+    --font-serif: Georgia, 'Times New Roman', serif;
+    --font-mono: 'Courier New', monospace;
+    --toast-msg: '';
+  }
+  [data-theme="dark"] {
+    --surface-100: #0f0e0b; --surface-200: #171612; --surface-300: #21201c; --surface-400: #3d3b34;
+    --inverted-100: #f9f9f0; --inverted-200: #efecca; --inverted-300: #ccc5a3; --inverted-400: #9d937c;
+    --border: #ffffff26;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: var(--font-serif);
+    background: var(--surface-100); color: var(--inverted-100);
+    transition: background .15s, color .15s;
+    padding-top: var(--nav-h);
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { opacity: .8; }
+
+  /* Nav */
+  .nav { position: fixed; top: 0; left: 0; right: 0; height: var(--nav-h);
+    background: var(--surface-100); border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 16px; padding: 0 24px; z-index: 100;
+    font-size: 13px; font-family: var(--font-mono); }
+  .nav a { color: var(--inverted-200); white-space: nowrap; }
+  .nav a:hover { color: var(--accent); }
+  .nav .spacer { flex: 1; }
+  .nav .mode-btn { cursor: pointer; padding: 4px 12px; border: 1px solid var(--border);
+    border-radius: 999px; background: transparent; color: var(--inverted-100);
+    font-family: var(--font-mono); font-size: 12px; }
+
+  /* Layout */
+  .layout { display: flex; min-height: calc(100vh - var(--nav-h)); }
+  .sidebar { width: 260px; flex-shrink: 0; padding: 24px; border-right: 1px solid var(--border);
+    position: sticky; top: var(--nav-h); height: calc(100vh - var(--nav-h)); overflow-y: auto;
+    font-family: var(--font-mono); font-size: 13px; }
+  .sidebar h3 { font-family: var(--font-serif); font-size: 14px; margin-bottom: 12px;
+    font-weight: 700; }
+  .sidebar label { display: block; margin-bottom: 8px; font-size: 12px; color: var(--inverted-300); }
+  .sidebar input[type="color"] { width: 100%; height: 36px; border: 1px solid var(--border);
+    border-radius: 6px; background: transparent; cursor: pointer; margin-bottom: 16px; }
+  .sidebar .section-nav { list-style: none; margin-top: 16px; }
+  .sidebar .section-nav li { margin-bottom: 4px; }
+  .sidebar .section-nav a { color: var(--inverted-300); font-size: 12px; }
+  .sidebar .section-nav a:hover { color: var(--accent); }
+
+  .main { flex: 1; padding: 40px 48px; max-width: 960px; }
+
+  /* Section */
+  .section { margin-bottom: 60px; }
+  .section h2 { font-size: 24px; font-weight: 700; margin-bottom: 20px; padding-bottom: 8px;
+    border-bottom: 1px solid var(--border); letter-spacing: -.01em; }
+  .section h3 { font-size: 16px; font-weight: 600; margin: 24px 0 12px; }
+  .section p, .section li { font-size: 14px; line-height: 1.6; color: var(--inverted-200); }
+  .section .desc { font-family: var(--font-mono); font-size: 12px; color: var(--inverted-400); margin-bottom: 16px; }
+
+  /* Color Swatch */
+  .swatch-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px,1fr)); gap: 12px; }
+  .swatch { border-radius: 8px; overflow: hidden; border: 1px solid var(--border); cursor: pointer; }
+  .swatch .color { height: 60px; position: relative; }
+  .swatch .info { padding: 8px 10px; background: var(--surface-200); font-family: var(--font-mono); font-size: 11px; }
+  .swatch .info .name { font-weight: 600; display: block; }
+  .swatch .info .hex { color: var(--inverted-400); }
+  .swatch:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,.08); }
+  .swatch:active { transform: scale(.97); }
+
+  /* Type Scale */
+  .type-row { display: flex; align-items: baseline; gap: 16px; padding: 8px 0;
+    border-bottom: 1px solid var(--border); }
+  .type-row .token { font-family: var(--font-mono); font-size: 11px; color: var(--inverted-400); width: 80px; flex-shrink: 0; }
+  .type-row .spec { font-family: var(--font-mono); font-size: 11px; color: var(--inverted-400); width: 180px; flex-shrink: 0; }
+  .type-row .sample { flex: 1; }
+
+  /* Spacing bars */
+  .spacing-row { display: flex; align-items: center; gap: 12px; padding: 4px 0; }
+  .spacing-row .label { font-family: var(--font-mono); font-size: 11px; color: var(--inverted-400); width: 100px; flex-shrink: 0; }
+  .spacing-row .bar { height: 20px; background: var(--accent); border-radius: 4px; min-width: 4px;
+    transition: background .15s; }
+
+  /* Shadow cards */
+  .shadow-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px,1fr)); gap: 16px; }
+  .shadow-card { padding: 24px; border-radius: 8px; background: var(--surface-200);
+    border: 1px solid var(--border); font-family: var(--font-mono); font-size: 11px; text-align: center; }
+  .shadow-card .label { display: block; margin-top: 8px; color: var(--inverted-400); }
+
+  /* Radius boxes */
+  .radius-grid { display: flex; gap: 20px; flex-wrap: wrap; }
+  .radius-box { width: 80px; height: 80px; background: var(--surface-200);
+    border: 1px solid var(--border); display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-mono); font-size: 10px; color: var(--inverted-400);
+    flex-direction: column; }
+
+  /* Opacity demos */
+  .opacity-row { display: flex; align-items: center; gap: 12px; padding: 4px 0; }
+  .opacity-row .label { font-family: var(--font-mono); font-size: 11px; color: var(--inverted-400); width: 80px; }
+  .opacity-row .demo { width: 80px; height: 30px; border-radius: 4px; background: var(--accent); flex-shrink: 0; }
+
+  /* Animation demos */
+  @keyframes demo-marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
+  @keyframes demo-mask-in { 0% { clip-path: inset(0 100% 0 0); } 100% { clip-path: inset(0 0 0 0); } }
+  @keyframes demo-mask-out { 0% { clip-path: inset(0 0 0 0); } 100% { clip-path: inset(0 100% 0 0); } }
+  @keyframes demo-parallax { 0% { transform: translateY(0) scale(1); opacity: 1; } 100% { transform: translateY(-20px) scale(.95); opacity: .5; } }
+  @keyframes demo-shrink { 0% { transform: scale(1); } 100% { transform: scale(.95); } }
+
+  .anim-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px,1fr)); gap: 16px; }
+  .anim-card { padding: 20px; border-radius: 8px; background: var(--surface-200);
+    border: 1px solid var(--border); text-align: center; }
+  .anim-card .demo-box { width: 100%; height: 60px; display: flex; align-items: center; justify-content: center;
+    background: var(--surface-100); border-radius: 6px; margin-bottom: 12px; overflow: hidden;
+    font-family: var(--font-mono); font-size: 13px; }
+  .anim-card .play-btn { padding: 4px 16px; border: 1px solid var(--border); border-radius: 999px;
+    background: transparent; color: var(--inverted-100); cursor: pointer; font-family: var(--font-mono);
+    font-size: 12px; }
+  .anim-card .play-btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .anim-card .code { font-family: var(--font-mono); font-size: 10px; color: var(--inverted-400); margin-top: 8px; }
+
+  /* Component demo */
+  .comp-demo { padding: 24px; border-radius: 8px; background: var(--surface-200);
+    border: 1px solid var(--border); margin-bottom: 16px; }
+  .comp-nav-demo { display: flex; align-items: center; gap: 8px; padding: 8px 16px;
+    background: var(--surface-100); border: 1px solid var(--border); border-radius: 999px;
+    max-width: 400px; font-family: var(--font-mono); font-size: 12px; }
+  .comp-nav-demo .logo { font-weight: 700; font-family: var(--font-serif); }
+  .comp-nav-demo .link { color: var(--inverted-300); }
+  .comp-btn-demo { display: inline-flex; align-items: center; gap: 8px; padding: 8px 20px;
+    border: 1px solid var(--border); border-radius: 999px; cursor: pointer;
+    background: transparent; color: var(--inverted-100); font-family: var(--font-mono);
+    font-size: 12px; transition: all .15s; }
+  .comp-btn-demo:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .comp-card-demo { padding: 20px; border-radius: 8px; background: var(--surface-100);
+    border: 1px solid var(--border); max-width: 280px; font-size: 13px; }
+  .comp-card-demo h4 { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+  .comp-card-demo p { font-size: 13px; color: var(--inverted-300); }
+
+  /* Toast */
+  .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+    padding: 8px 20px; border-radius: 8px; background: var(--inverted-100); color: var(--surface-100);
+    font-family: var(--font-mono); font-size: 12px; z-index: 200;
+    opacity: 0; transition: opacity .2s; pointer-events: none; }
+  .toast.show { opacity: 1; }
+
+  /* Badge tags */
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .tag { display: inline-block; padding: 2px 10px; border-radius: 999px;
+    font-family: var(--font-mono); font-size: 10px; border: 1px solid var(--border); }
+</style>
+</head>
+<body>
+
+<div class="nav">
+  <span style="font-weight:700;font-family:var(--font-serif);letter-spacing:-.02em;">Aptos DS</span>
+  <span style="color:var(--inverted-400);font-size:11px;">Playground</span>
+  <div class="spacer"></div>
+  <button class="mode-btn" onclick="toggleMode()" id="modeBtn">☀ Light</button>
+</div>
+
+<div class="layout">
+  <aside class="sidebar">
+    <h3>主题定制</h3>
+    <label>主色 Accent</label>
+    <input type="color" id="accentPicker" value="#ff8866" oninput="updateAccent(this.value)">
+
+    <label>Surface-100</label>
+    <input type="color" id="surfacePicker" value="#f9f9f0" oninput="updateSurface(this.value)">
+
+    <h3>跳转</h3>
+    <ul class="section-nav">
+      <li><a href="#overview">Overview</a></li>
+      <li><a href="#colors">Color Palette</a></li>
+      <li><a href="#typography">Typography</a></li>
+      <li><a href="#spacing">Spacing</a></li>
+      <li><a href="#shadows">Shadows</a></li>
+      <li><a href="#radius">Border Radius</a></li>
+      <li><a href="#opacity">Opacity</a></li>
+      <li><a href="#animations">Animations</a></li>
+      <li><a href="#components">Components</a></li>
+      <li><a href="#patterns">Patterns</a></li>
+    </ul>
+  </aside>
+
+  <main class="main">
+
+    <!-- Overview -->
+    <div class="section" id="overview">
+      <h2>0. Overview</h2>
+      <p style="font-size:15px;margin-bottom:12px;">
+        <strong>Aptos Network</strong> 是 Layer 1 区块链品牌，设计风格定位为
+        <strong>极简主义 × 编辑感 × 技术严谨</strong>。
+      </p>
+      <div class="tags">
+        <span class="tag">极简</span>
+        <span class="tag">编辑感</span>
+        <span class="tag">技术严谨</span>
+        <span class="tag">暖中性</span>
+        <span class="tag">文字驱动</span>
+        <span class="tag">滚动叙事</span>
+        <span class="tag">Light/Dark</span>
+        <span class="tag">Variable Font</span>
+      </div>
+      <h3>核心设计语言</h3>
+      <ul style="padding-left:20px;">
+        <li>暖色调中性色板（米白→奶油→沙色→炭灰）</li>
+        <li>Season Serif 可变字体 + Akkurat Mono 等宽字体</li>
+        <li>无阴影——层级通过表面颜色变化和边框透明度实现</li>
+        <li>滚动驱动动效（text mask、parallax）</li>
+        <li>Light/Dark 双模式，强调色双模式一致</li>
+      </ul>
+    </div>
+
+    <!-- Colors -->
+    <div class="section" id="colors">
+      <h2>1. Color Palette</h2>
+      <p class="desc">点击色块复制 HEX 值</p>
+
+      <h3>原始色板</h3>
+      <div class="swatch-grid" id="colorGrid">
+        <div class="swatch" onclick="copyHex('#fffffa')"><div class="color" style="background:#fffffa"></div><div class="info"><span class="name">pure-white</span><span class="hex">#fffffa</span></div></div>
+        <div class="swatch" onclick="copyHex('#f9f9f0')"><div class="color" style="background:#f9f9f0;border-bottom:1px solid rgba(0,0,0,.1)"></div><div class="info"><span class="name">white</span><span class="hex">#f9f9f0</span></div></div>
+        <div class="swatch" onclick="copyHex('#efecca')"><div class="color" style="background:#efecca"></div><div class="info"><span class="name">cream</span><span class="hex">#efecca</span></div></div>
+        <div class="swatch" onclick="copyHex('#ccc5a3')"><div class="color" style="background:#ccc5a3"></div><div class="info"><span class="name">sand</span><span class="hex">#ccc5a3</span></div></div>
+        <div class="swatch" onclick="copyHex('#9d937c')"><div class="color" style="background:#9d937c"></div><div class="info"><span class="name">tan</span><span class="hex">#9d937c</span></div></div>
+        <div class="swatch" onclick="copyHex('#3d3b34')"><div class="color" style="background:#3d3b34"></div><div class="info"><span class="name" style="color:#fff">ash</span><span class="hex" style="color:#aaa">#3d3b34</span></div></div>
+        <div class="swatch" onclick="copyHex('#2f2d28')"><div class="color" style="background:#2f2d28"></div><div class="info"><span class="name" style="color:#fff">graphite</span><span class="hex" style="color:#aaa">#2f2d28</span></div></div>
+        <div class="swatch" onclick="copyHex('#21201c')"><div class="color" style="background:#21201c"></div><div class="info"><span class="name" style="color:#fff">coal</span><span class="hex" style="color:#aaa">#21201c</span></div></div>
+        <div class="swatch" onclick="copyHex('#171612')"><div class="color" style="background:#171612"></div><div class="info"><span class="name" style="color:#fff">ink</span><span class="hex" style="color:#aaa">#171612</span></div></div>
+        <div class="swatch" onclick="copyHex('#0f0e0b')"><div class="color" style="background:#0f0e0b"></div><div class="info"><span class="name" style="color:#fff">black</span><span class="hex" style="color:#aaa">#0f0e0b</span></div></div>
+        <div class="swatch" onclick="copyHex('#d5fad3')"><div class="color" style="background:#d5fad3;border-bottom:1px solid rgba(0,0,0,.1)"></div><div class="info"><span class="name">mint</span><span class="hex">#d5fad3</span></div></div>
+        <div class="swatch" onclick="copyHex('#badbee')"><div class="color" style="background:#badbee;border-bottom:1px solid rgba(0,0,0,.1)"></div><div class="info"><span class="name">blue</span><span class="hex">#badbee</span></div></div>
+        <div class="swatch" onclick="copyHex('#ff8866')" id="coralSwatch"><div class="color" style="background:#f86"></div><div class="info"><span class="name">coral</span><span class="hex">#ff8866</span></div></div>
+      </div>
+
+      <h3 style="margin-top:24px;">语义颜色 — Surface</h3>
+      <div class="swatch-grid" id="surfaceGrid">
+        <div class="swatch" onclick="copyHex(getComputedStyle(document.documentElement).getPropertyValue('--surface-100').trim())"><div class="color" style="background:var(--surface-100);border-bottom:1px solid var(--border)"></div><div class="info"><span class="name">surface-100</span><span class="hex" id="surface100Label">#f9f9f0</span></div></div>
+        <div class="swatch" onclick="copyHex(getComputedStyle(document.documentElement).getPropertyValue('--surface-200').trim())"><div class="color" style="background:var(--surface-200)"></div><div class="info"><span class="name">surface-200</span><span class="hex" id="surface200Label">#efecca</span></div></div>
+        <div class="swatch" onclick="copyHex(getComputedStyle(document.documentElement).getPropertyValue('--surface-300').trim())"><div class="color" style="background:var(--surface-300)"></div><div class="info"><span class="name">surface-300</span><span class="hex" id="surface300Label">#ccc5a3</span></div></div>
+        <div class="swatch" onclick="copyHex(getComputedStyle(document.documentElement).getPropertyValue('--surface-400').trim())"><div class="color" style="background:var(--surface-400)"></div><div class="info"><span class="name">surface-400</span><span class="hex" id="surface400Label">#9d937c</span></div></div>
+      </div>
+
+      <h3>语义颜色 — Inverted</h3>
+      <div class="swatch-grid">
+        <div class="swatch" onclick="copyHex(getComputedStyle(document.documentElement).getPropertyValue('--inverted-100').trim())"><div class="color" style="background:var(--inverted-100)"></div><div class="info"><span class="name" style="color:var(--inverted-100);mix-blend-mode:difference">inverted-100</span><span class="hex" id="inv100Label" style="color:var(--inverted-300)">#0f0e0b</span></div></div>
+        <div class="swatch" onclick="copyHex(getComputedStyle(document.documentElement).getPropertyValue('--inverted-200').trim())"><div class="color" style="background:var(--inverted-200)"></div><div class="info"><span class="name" style="color:var(--inverted-100);mix-blend-mode:difference">inverted-200</span><span class="hex" id="inv200Label" style="color:var(--inverted-300)">#171612</span></div></div>
+        <div class="swatch" onclick="copyHex(getComputedStyle(document.documentElement).getPropertyValue('--inverted-300').trim())"><div class="color" style="background:var(--inverted-300)"></div><div class="info"><span class="name" style="color:var(--inverted-100);mix-blend-mode:difference">inverted-300</span><span class="hex" id="inv300Label" style="color:var(--inverted-300)">#21201c</span></div></div>
+        <div class="swatch" onclick="copyHex(getComputedStyle(document.documentElement).getPropertyValue('--inverted-400').trim())"><div class="color" style="background:var(--inverted-400)"></div><div class="info"><span class="name" style="color:var(--inverted-100);mix-blend-mode:difference">inverted-400</span><span class="hex" id="inv400Label" style="color:var(--inverted-300)">#3d3b34</span></div></div>
+      </div>
+    </div>
+
+    <!-- Typography -->
+    <div class="section" id="typography">
+      <h2>2. Typography</h2>
+      <p class="desc">字体：Season Serif（可变字体 SERF axis） + Akkurat Mono — 以下演示使用系统 serif/monospace 模拟</p>
+
+      <div class="type-row">
+        <span class="token">text-2xs</span>
+        <span class="spec">0.563rem / 130% / +0.02em / 400</span>
+        <span class="sample" style="font-size:.563rem;line-height:1.3;letter-spacing:.02em;">Aptos Network 区块链</span>
+      </div>
+      <div class="type-row">
+        <span class="token">text-xs</span>
+        <span class="spec">0.688rem / 130% / +0.03em / 400</span>
+        <span class="sample" style="font-size:.688rem;line-height:1.3;letter-spacing:.03em;">Aptos Network 区块链</span>
+      </div>
+      <div class="type-row">
+        <span class="token">text-sm</span>
+        <span class="spec">0.813rem / 140% / +0.02em / 358</span>
+        <span class="sample" style="font-size:.813rem;line-height:1.4;letter-spacing:.02em;">Aptos Network 区块链</span>
+      </div>
+      <div class="type-row">
+        <span class="token">text-base</span>
+        <span class="spec">1rem / 140% / +0.02em / 358</span>
+        <span class="sample" style="font-size:1rem;line-height:1.4;letter-spacing:.02em;">Aptos Network 区块链</span>
+      </div>
+      <div class="type-row">
+        <span class="token">text-lg</span>
+        <span class="spec">1.125rem / 140% / +0.01em / 444</span>
+        <span class="sample" style="font-size:1.125rem;line-height:1.4;letter-spacing:.01em;">Aptos Network 区块链</span>
+      </div>
+      <div class="type-row">
+        <span class="token">text-xl</span>
+        <span class="spec">1.25rem / 125% / -0.01em / 444</span>
+        <span class="sample" style="font-size:1.25rem;line-height:1.25;letter-spacing:-.01em;">Aptos Network</span>
+      </div>
+      <div class="type-row">
+        <span class="token">text-2xl</span>
+        <span class="spec">1.5rem / 110% / -0.02em / 420</span>
+        <span class="sample" style="font-size:1.5rem;line-height:1.1;letter-spacing:-.02em;">Aptos Network</span>
+      </div>
+      <div class="type-row">
+        <span class="token">text-3xl</span>
+        <span class="spec">2.25rem / 110% / -0.02em / 420</span>
+        <span class="sample" style="font-size:2.25rem;line-height:1.1;letter-spacing:-.02em;">Aptos</span>
+      </div>
+      <div class="type-row">
+        <span class="token">text-4xl</span>
+        <span class="spec">3.438rem / 100% / -0.02em / 420</span>
+        <span class="sample" style="font-size:3.438rem;line-height:1;letter-spacing:-.02em;">Aptos</span>
+      </div>
+      <div class="type-row">
+        <span class="token">text-5xl</span>
+        <span class="spec">5.625rem / 95% / -0.02em / 335</span>
+        <span class="sample" style="font-size:5.625rem;line-height:.95;letter-spacing:-.02em;">Aptos</span>
+      </div>
+      <div class="type-row">
+        <span class="token">text-6xl</span>
+        <span class="spec">7.5rem / 95% / -0.03em / 335</span>
+        <span class="sample" style="font-size:7.5rem;line-height:.95;letter-spacing:-.03em;">A</span>
+      </div>
+
+      <h3>字体组合示例</h3>
+      <div style="padding:20px;background:var(--surface-200);border-radius:8px;border:1px solid var(--border);">
+        <p style="font-size:2.25rem;font-weight:700;line-height:1.1;letter-spacing:-.02em;margin-bottom:8px;">Season Serif Heading</p>
+        <p style="font-size:1rem;line-height:1.6;letter-spacing:.02em;">正文段落使用 Season Serif 的正文 weight（358），呈现出编辑感十足的阅读体验。Aptos 官网用单一字体家族通过可变字重实现完整的视觉层级。</p>
+        <p style="font-family:var(--font-mono);font-size:.813rem;margin-top:12px;color:var(--inverted-400);">Akkurat Mono — 用于技术标签和导航 (12px)</p>
+      </div>
+    </div>
+
+    <!-- Spacing -->
+    <div class="section" id="spacing">
+      <h2>3. Spacing System</h2>
+      <p class="desc">基础单位：5px。以下展示 Tailwind v4 spacing scale 的视觉效果。</p>
+
+      <div class="spacing-row"><span class="label">spacing-1 (5px)</span><div class="bar" style="width:5px"></div></div>
+      <div class="spacing-row"><span class="label">spacing-2 (10px)</span><div class="bar" style="width:10px"></div></div>
+      <div class="spacing-row"><span class="label">spacing-3 (15px)</span><div class="bar" style="width:15px"></div></div>
+      <div class="spacing-row"><span class="label">spacing-4 (20px)</span><div class="bar" style="width:20px"></div></div>
+      <div class="spacing-row"><span class="label">spacing-5 (25px)</span><div class="bar" style="width:25px"></div></div>
+      <div class="spacing-row"><span class="label">spacing-6 (30px)</span><div class="bar" style="width:30px"></div></div>
+      <div class="spacing-row"><span class="label">spacing-8 (40px)</span><div class="bar" style="width:40px"></div></div>
+      <div class="spacing-row"><span class="label">spacing-9 (45px)</span><div class="bar" style="width:45px"></div></div>
+      <div class="spacing-row"><span class="label">spacing-10 (50px)</span><div class="bar" style="width:50px"></div></div>
+      <div class="spacing-row"><span class="label">spacing-12 (60px)</span><div class="bar" style="width:60px"></div></div>
+      <div class="spacing-row"><span class="label">spacing-18 (90px)</span><div class="bar" style="width:90px"></div></div>
+      <div class="spacing-row"><span class="label">spacing-24 (120px)</span><div class="bar" style="width:120px"></div></div>
+
+      <h3>容器宽度</h3>
+      <p>最大容器宽度：<code>110rem (1760px)</code><br>
+      内容区：<code>min(100vw, 110rem)</code></p>
+    </div>
+
+    <!-- Shadows -->
+    <div class="section" id="shadows">
+      <h2>4. Shadows & Elevation</h2>
+      <p class="desc">Aptos 不（或极少）使用 box-shadow。表面层级通过 Surface 颜色明度变化实现。</p>
+      <div class="shadow-grid">
+        <div class="shadow-card" style="background:var(--surface-100);"><span style="font-size:24px;">📄</span><span class="label">Level 1<br>surface-100</span></div>
+        <div class="shadow-card" style="background:var(--surface-200);"><span style="font-size:24px;">📄</span><span class="label">Level 2<br>surface-200</span></div>
+        <div class="shadow-card" style="background:var(--surface-300);"><span style="font-size:24px;">📄</span><span class="label">Level 3<br>surface-300</span></div>
+        <div class="shadow-card" style="background:var(--surface-400);"><span style="font-size:24px;">📄</span><span class="label">Level 4<br>surface-400</span></div>
+      </div>
+      <p style="margin-top:12px;font-size:13px;color:var(--inverted-400);">Light 模式逐层变暗，Dark 模式逐层变亮 — 替代传统阴影方案。</p>
+    </div>
+
+    <!-- Radius -->
+    <div class="section" id="radius">
+      <h2>5. Border Radius</h2>
+      <div class="radius-grid">
+        <div class="radius-box" style="border-radius:var(--radius-sm, .25rem)"><span>sm</span><span>.25rem</span></div>
+        <div class="radius-box" style="border-radius:var(--radius-md, .375rem)"><span>md</span><span>.375rem</span></div>
+        <div class="radius-box" style="border-radius:9999px"><span>full</span><span>9999px</span></div>
+      </div>
+    </div>
+
+    <!-- Opacity -->
+    <div class="section" id="opacity">
+      <h2>6. Opacity & Transparency</h2>
+      <div class="opacity-row">
+        <span class="label">边框 6%</span>
+        <div class="demo" style="background:var(--border);"></div>
+        <span style="font-family:var(--font-mono);font-size:11px;color:var(--inverted-400);">var(--color-border)</span>
+      </div>
+      <div class="opacity-row">
+        <span class="label">Nav 10%</span>
+        <div class="demo" style="background:var(--inverted-100);opacity:.1;"></div>
+        <span style="font-family:var(--font-mono);font-size:11px;color:var(--inverted-400);">border-inverted-100/10</span>
+      </div>
+      <div class="opacity-row">
+        <span class="label">Accent 50%</span>
+        <div class="demo" style="background:var(--accent);opacity:.5;"></div>
+        <span style="font-family:var(--font-mono);font-size:11px;color:var(--inverted-400);">accent @ .5</span>
+      </div>
+      <div class="opacity-row">
+        <span class="label">Accent 25%</span>
+        <div class="demo" style="background:var(--accent);opacity:.25;"></div>
+        <span style="font-family:var(--font-mono);font-size:11px;color:var(--inverted-400);">accent @ .25</span>
+      </div>
+    </div>
+
+    <!-- Animations -->
+    <div class="section" id="animations">
+      <h2>7. Animations & Transitions</h2>
+      <p class="desc">点击按钮触发动效演示。Easing：cubic-bezier(.76, 0, .24, 1)</p>
+
+      <div class="anim-grid">
+        <div class="anim-card">
+          <div class="demo-box"><div id="maskInDemo" style="padding:0 20px;">Text Mask In</div></div>
+          <button class="play-btn" onclick="playAnimation('maskInDemo', 'demo-mask-in 1.5s cubic-bezier(.76,0,.24,1) forwards')">▶ Play</button>
+          <div class="code">text-mask-in</div>
+        </div>
+
+        <div class="anim-card">
+          <div class="demo-box"><div id="maskOutDemo" style="padding:0 20px;">Text Mask Out</div></div>
+          <button class="play-btn" onclick="playAnimation('maskOutDemo', 'demo-mask-out 1s cubic-bezier(.76,0,.24,1) forwards')">▶ Play</button>
+          <div class="code">text-mask-out</div>
+        </div>
+
+        <div class="anim-card">
+          <div class="demo-box" style="overflow:hidden;"><div id="marqueeDemo" style="white-space:nowrap;padding:0 20px;">Scrolling Marquee — Aptos Network — </div></div>
+          <button class="play-btn" onclick="playAnimation('marqueeDemo', 'demo-marquee 3s linear infinite')">▶ Play</button>
+          <div class="code">marquee-rtl</div>
+        </div>
+
+        <div class="anim-card">
+          <div class="demo-box"><div id="parallaxDemo" style="padding:0 20px;">Parallax</div></div>
+          <button class="play-btn" onclick="playAnimation('parallaxDemo', 'demo-parallax 1.5s ease-out forwards')">▶ Play</button>
+          <div class="code">parallax-in (simulated)</div>
+        </div>
+
+        <div class="anim-card">
+          <div class="demo-box" style="position:relative;"><div id="appearDemo" style="padding:0 20px;clip-path:inset(0 100% 0 0);">From Right</div></div>
+          <button class="play-btn" onclick="playAnimation('appearDemo', 'demo-mask-in 1.5s cubic-bezier(.76,0,.24,1) forwards')">▶ Play</button>
+          <div class="code">appear-mask-in-from-right</div>
+        </div>
+
+        <div class="anim-card">
+          <div class="demo-box"><div id="shrinkDemo" style="padding:0 20px;">Stackable</div></div>
+          <button class="play-btn" onclick="playAnimation('shrinkDemo', 'demo-shrink .3s ease-out')">▶ Play</button>
+          <div class="code">stackable-shrink</div>
+        </div>
+      </div>
+
+      <h3>Duration × Easing 对比</h3>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;">
+        <div style="flex:1;min-width:140px;padding:12px;background:var(--surface-200);border-radius:8px;border:1px solid var(--border);">
+          <span style="font-family:var(--font-mono);font-size:11px;">0.1s ease-out</span>
+          <div style="margin-top:8px;height:4px;background:var(--accent);border-radius:4px;transition:width .1s ease-out;width:0" id="dur1"></div>
+          <button class="play-btn" style="margin-top:8px;" onclick="document.getElementById('dur1').style.width='100%';setTimeout(()=>document.getElementById('dur1').style.width='0',200)">▶</button>
+        </div>
+        <div style="flex:1;min-width:140px;padding:12px;background:var(--surface-200);border-radius:8px;border:1px solid var(--border);">
+          <span style="font-family:var(--font-mono);font-size:11px;">0.15s ease-out</span>
+          <div style="margin-top:8px;height:4px;background:var(--accent);border-radius:4px;transition:width .15s ease-out;width:0" id="dur2"></div>
+          <button class="play-btn" style="margin-top:8px;" onclick="document.getElementById('dur2').style.width='100%';setTimeout(()=>document.getElementById('dur2').style.width='0',250)">▶</button>
+        </div>
+        <div style="flex:1;min-width:140px;padding:12px;background:var(--surface-200);border-radius:8px;border:1px solid var(--border);">
+          <span style="font-family:var(--font-mono);font-size:11px;">0.2s ease-out</span>
+          <div style="margin-top:8px;height:4px;background:var(--accent);border-radius:4px;transition:width .2s ease-out;width:0" id="dur3"></div>
+          <button class="play-btn" style="margin-top:8px;" onclick="document.getElementById('dur3').style.width='100%';setTimeout(()=>document.getElementById('dur3').style.width='0',400)">▶</button>
+        </div>
+        <div style="flex:1;min-width:140px;padding:12px;background:var(--surface-200);border-radius:8px;border:1px solid var(--border);">
+          <span style="font-family:var(--font-mono);font-size:11px;">.76,.0,.24,1</span>
+          <div style="margin-top:8px;height:4px;background:var(--accent);border-radius:4px;transition:width .6s cubic-bezier(.76,0,.24,1);width:0" id="dur4"></div>
+          <button class="play-btn" style="margin-top:8px;" onclick="document.getElementById('dur4').style.width='100%';setTimeout(()=>document.getElementById('dur4').style.width='0',800)">▶</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Components -->
+    <div class="section" id="components">
+      <h2>8. Component Styles</h2>
+
+      <h3>Navigation（药丸导航）</h3>
+      <div class="comp-demo">
+        <div class="comp-nav-demo">
+          <span class="logo">Aptos</span>
+          <span style="flex:1"></span>
+          <span class="link">Foundation</span>
+          <span class="link">Developers</span>
+          <span class="link">Blog</span>
+          <span style="width:1px;height:20px;background:var(--border)"></span>
+          <span class="link" style="background:var(--accent);color:#fff;padding:2px 10px;border-radius:999px;">Get Started</span>
+        </div>
+        <p style="margin-top:8px;font-size:12px;color:var(--inverted-400);font-family:var(--font-mono);">
+          Position: fixed | top: 10px | rounded-full | bg-surface-100 | border
+        </p>
+        <div style="display:flex;gap:16px;margin-top:12px;">
+          <span class="tag">${surface-100}</span>
+          <span class="tag">${inverted-100/10 border}</span>
+          <span class="tag">${radius-full}</span>
+        </div>
+      </div>
+
+      <h3>Button（药丸按钮）</h3>
+      <div class="comp-demo">
+        <button class="comp-btn-demo" onmouseover="this.style.background='var(--accent)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color=''">Get Started →</button>
+        <button class="comp-btn-demo" style="margin-left:8px;opacity:.4;cursor:default;" disabled>Disabled</button>
+        <p style="margin-top:8px;font-size:12px;color:var(--inverted-400);font-family:var(--font-mono);">
+          text-xs | font-mono | h-9 (45px) | rounded-full | gap-2
+        </p>
+      </div>
+
+      <h3>Card（卡片）</h3>
+      <div class="comp-demo" style="display:flex;gap:16px;flex-wrap:wrap;">
+        <div class="comp-card-demo">
+          <h4>Move</h4>
+          <p>Aptos 的突破性共识机制，实现亚秒级最终确认。</p>
+        </div>
+        <div class="comp-card-demo">
+          <h4>Stake</h4>
+          <p>委托质押和验证者经济，确保网络安全与去中心化。</p>
+        </div>
+        <div class="comp-card-demo">
+          <h4>Build</h4>
+          <p>Move 语言生态，开发者工具与智能合约标准库。</p>
+        </div>
+      </div>
+
+      <h3>Accordion</h3>
+      <div class="comp-demo">
+        <details style="padding:12px;background:var(--surface-100);border-radius:8px;border:1px solid var(--border);">
+          <summary style="cursor:pointer;font-weight:600;font-size:14px;">Aptos 使用什么共识机制？</summary>
+          <p style="margin-top:8px;font-size:13px;color:var(--inverted-300);">Aptos 使用 AptosBFT v4 共识协议，基于 HotStuff 的改进版，支持亚秒级最终确认。</p>
+        </details>
+      </div>
+    </div>
+
+    <!-- Patterns -->
+    <div class="section" id="patterns">
+      <h2>9. Common Patterns</h2>
+
+      <h3>排版组合</h3>
+      <div style="padding:20px;background:var(--surface-200);border-radius:8px;border:1px solid var(--border);margin-bottom:12px;">
+        <p style="font-size:11px;font-family:var(--font-mono);color:var(--inverted-400);margin-bottom:8px;">// 超大标题 + 等宽标注 + 正文段落</p>
+        <p style="font-size:3.438rem;line-height:1;letter-spacing:-.02em;font-weight:700;">Build on Aptos</p>
+        <p style="font-family:var(--font-mono);font-size:.813rem;color:var(--inverted-400);margin:8px 0 12px;">text-mono · 技术严谨 · 编辑感</p>
+        <p style="font-size:1rem;line-height:1.6;">Aptos 是下一代 Layer 1 区块链，旨在构建最具扩展性和安全性的Move生态。</p>
+      </div>
+
+      <h3>双模式适配</h3>
+      <div style="padding:16px;border-radius:8px;background:var(--surface-100);border:1px solid var(--border);margin-bottom:12px;">
+        <p style="font-family:var(--font-mono);font-size:11px;color:var(--inverted-400);">
+          <code>bg-surface-100 text-inverted-100</code>
+          → 利用 light-dark() 自动适配双模式
+        </p>
+      </div>
+
+      <h3>代码片段</h3>
+      <pre style="padding:16px;background:var(--surface-200);border-radius:8px;border:1px solid var(--border);font-family:var(--font-mono);font-size:12px;overflow-x:auto;color:var(--inverted-200);cursor:pointer;" onclick="copyText(this.innerText)">/* 导航组件 — Tailwind v4 */
+.fixed top-2 left-1/2 -translate-x-1/2 z-50
+w-[calc(100vw-var(--content-32)*4)]
+py-2 ps-4 pe-2
+bg-surface-100 border rounded-full
+transition-[border,top,width,padding,border-radius]
+motion-reduce:transform-none motion-reduce:transition-none</pre>
+      <p style="font-size:11px;font-family:var(--font-mono);color:var(--inverted-400);margin-top:4px;">点击代码复制</p>
+    </div>
+
+  </main>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  // Light/Dark mode
+  function toggleMode() {
+    const html = document.documentElement;
+    const isDark = html.getAttribute('data-theme') === 'dark';
+    html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+    document.getElementById('modeBtn').textContent = isDark ? '☀ Light' : '🌙 Dark';
+    // Update swatch labels for semantic colors
+    updateSemanticLabels();
+  }
+
+  // Accent color
+  function updateAccent(val) {
+    document.documentElement.style.setProperty('--accent', val);
+    document.getElementById('coralSwatch').querySelector('.hex').textContent = val;
+  }
+
+  // Surface base color (adjust surface-100)
+  function updateSurface(val) {
+    // For demo simplicity, adjust surface-100 in dark/light
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    if (!isDark) {
+      document.documentElement.style.setProperty('--surface-100', val);
+      document.getElementById('surface100Label').textContent = val;
+    } else {
+      document.documentElement.style.setProperty('--surface-100', val);
+      document.getElementById('surface100Label').textContent = val;
+    }
+  }
+
+  // Animation player
+  function playAnimation(id, animation) {
+    const el = document.getElementById(id);
+    el.style.animation = 'none';
+    el.offsetHeight; // reflow
+    el.style.animation = animation;
+    // Allow replay by clearing
+    setTimeout(() => { if (!animation.includes('infinite')) el.style.animation = 'none'; }, 3000);
+  }
+
+  // Copy to clipboard
+  function copyHex(hex) {
+    navigator.clipboard.writeText(hex).then(() => {
+      showToast(`Copied ${hex}`);
+    }).catch(() => {
+      // Fallback
+      const ta = document.createElement('textarea');
+      ta.value = hex; document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+      document.body.removeChild(ta);
+      showToast(`Copied ${hex}`);
+    });
+  }
+
+  function copyText(text) {
+    navigator.clipboard.writeText(text).then(() => showToast('代码已复制'));
+  }
+
+  let toastTimer;
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 1500);
+  }
+
+  // Update semantic color labels on theme change
+  function updateSemanticLabels() {
+    const s = getComputedStyle(document.documentElement);
+    const labels = ['surface100Label','surface200Label','surface300Label','surface400Label',
+                    'inv100Label','inv200Label','inv300Label','inv400Label'];
+    const vars = ['--surface-100','--surface-200','--surface-300','--surface-400',
+                  '--inverted-100','--inverted-200','--inverted-300','--inverted-400'];
+    labels.forEach((id, i) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = s.getPropertyValue(vars[i]).trim();
+    });
+  }
+
+  // Init
+  updateSemanticLabels();
+</script>
+</body>
+</html>

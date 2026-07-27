@@ -1,0 +1,816 @@
+---
+// Macintosh3D.astro — 复古 Mac 128k 风格 3D 电脑（克莱因蓝 + 纯白）
+---
+
+<div class="mac-wrapper" id="macWrapper">
+  <div class="mac-container" id="macContainer">
+    <!-- ========== 主机身 ========== -->
+    <div class="mac-body" id="macBody">
+      <!-- 右侧 LED 面板 -->
+      <div class="mac-led-panel" id="macLedPanel">
+        <div class="mac-led-header">SYS</div>
+        <div class="mac-led-screen">
+          <span class="mac-led-line" id="macLedX">X:0000</span>
+          <span class="mac-led-line" id="macLedY">Y:0000</span>
+          <span class="mac-led-status">
+            <span class="mac-led-dot"></span>
+            <span>ON</span>
+          </span>
+        </div>
+      </div>
+
+      <!-- 正面机身 -->
+      <div class="mac-front">
+        <!-- ====== 屏幕边框区域 ====== -->
+        <div class="mac-screen-bezel">
+          <!-- 屏幕斜面内框 -->
+          <div class="mac-screen-bevel"></div>
+          <!-- 屏幕（纯黑） -->
+          <div class="mac-screen" id="macScreen">
+            <!-- 菜单栏 (Klein Blue) -->
+            <div class="mac-menubar" id="macMenubar">
+              <div class="mac-menubar-left">
+                <span class="mac-menubar-apple">◆</span>
+                <span class="mac-menubar-item active">System</span>
+                <span class="mac-menubar-item">Disk</span>
+                <span class="mac-menubar-item">Trash</span>
+              </div>
+              <div class="mac-menubar-right">
+                <span id="macClockDisplay">12:00</span>
+              </div>
+            </div>
+            <!-- 桌面 -->
+            <div class="mac-desktop">
+              <!-- 桌面图标 -->
+              <div class="mac-desktop-icons">
+                <div class="mac-icon" style="top:18px;left:12px;">
+                  <svg class="mac-icon-svg" width="36" height="36" viewBox="0 0 36 36">
+                    <rect x="6" y="10" width="24" height="20" rx="2" fill="none" stroke="#FFFFFF" stroke-width="1.5"/>
+                    <rect x="10" y="6" width="16" height="6" rx="1" fill="none" stroke="#FFFFFF" stroke-width="1.2"/>
+                    <line x1="14" y1="20" x2="22" y2="20" stroke="#FFFFFF" stroke-width="1.2"/>
+                    <line x1="14" y1="24" x2="20" y2="24" stroke="#FFFFFF" stroke-width="1.2"/>
+                  </svg>
+                  <span class="mac-icon-label white">Hard Disk</span>
+                </div>
+                <div class="mac-icon" style="top:18px;right:12px;">
+                  <svg class="mac-icon-svg" width="36" height="36" viewBox="0 0 36 36">
+                    <rect x="8" y="10" width="20" height="20" rx="3" fill="none" stroke="#FF7A00" stroke-width="1.5"/>
+                    <line x1="18" y1="8" x2="18" y2="28" stroke="#FF7A00" stroke-width="1.5"/>
+                    <line x1="10" y1="18" x2="26" y2="18" stroke="#FF7A00" stroke-width="1.5"/>
+                  </svg>
+                  <span class="mac-icon-label orange">Trash</span>
+                </div>
+              </div>
+              <!-- 文档窗口 -->
+              <div class="mac-window" id="macWindow">
+                <div class="mac-window-titlebar">
+                  <div class="mac-window-controls">
+                    <span class="mac-window-btn close"></span>
+                    <span class="mac-window-btn collapse"></span>
+                    <span class="mac-window-btn zoom"></span>
+                  </div>
+                  <span class="mac-window-title">Memo.txt</span>
+                </div>
+                <div class="mac-window-body" id="typewriterArea">
+                  <span id="typewriterText">当答案变得唾手可得，<br>真正有价值的反而是提出问题的能力，<br>以及掌握正确思维的能力<br>When answers become cheap <br>What become valuable is asking the right questions and having the right mindset</span>
+                  <span class="mac-cursor blink" id="typewriterCursor">▍</span>
+                </div>
+              </div>
+              <!-- 桌面底部状态 -->
+              <div class="mac-desktop-footer" id="macDesktopFooter">
+                <span>◆</span>
+                <span>● 2 items</span>
+                <span>53 MB available</span>
+              </div>
+            </div>
+          </div>
+          <!-- 屏幕表面反光 -->
+          <div class="mac-screen-glare"></div>
+        </div>
+
+        <!-- ====== 机身下半部分 ====== -->
+        <div class="mac-bottom-area">
+          <!-- 散热格栅装饰 -->
+          <div class="mac-vent">
+            {Array.from({length: 12}, (_, i) => (
+              <span class="mac-vent-slot" key={i}></span>
+            ))}
+          </div>
+          <!-- 品牌标识区域 -->
+          <div class="mac-brand-area">
+            <svg class="mac-apple-logo" width="28" height="28" viewBox="0 0 28 28">
+              <path d="M21.5 14.5c0-1.8.8-3.4 2-4.5-.9-1.2-2.2-1.9-3.7-2-1.6-.2-3.2 1-4 1s-2.3-.96-3.8-.93c-2 .03-3.8 1.16-4.8 2.93-2.1 3.6-.5 9 1.5 11.9 1 1.5 2.2 3.1 3.8 3 1.5-.1 2-.96 3.8-.96s2.3.96 3.8.9c1.6-.04 2.6-1.45 3.6-2.95.7-1 1.2-2.1 1.6-3.3-1.3-.5-2.3-1.7-2.3-3.2z" fill="none" stroke="#002FA7" stroke-width="1.2"/>
+              <ellipse cx="17" cy="6.5" rx="2.5" ry="3.5" fill="none" stroke="#002FA7" stroke-width="1"/>
+            </svg>
+            <span class="mac-brand-text">Macintosh</span>
+          </div>
+          <!-- 软驱 -->
+          <div class="mac-floppy-area">
+            <div class="mac-floppy-slot">
+              <div class="mac-floppy-inner"></div>
+            </div>
+            <div class="mac-floppy-led"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 机身底部边缘厚度 -->
+      <div class="mac-bottom-edge"></div>
+    </div>
+
+    <!-- ========== 键盘 ========== -->
+    <div class="mac-keyboard" id="macKeyboard">
+      <div class="mac-keyboard-body">
+        <!-- Row 1: Number row -->
+        <div class="mac-key-row">
+          <span class="mac-key" data-key="esc">esc</span>
+          <span class="mac-key" data-key="1">1</span>
+          <span class="mac-key" data-key="2">2</span>
+          <span class="mac-key" data-key="3">3</span>
+          <span class="mac-key" data-key="4">4</span>
+          <span class="mac-key" data-key="5">5</span>
+          <span class="mac-key" data-key="6">6</span>
+          <span class="mac-key" data-key="7">7</span>
+          <span class="mac-key" data-key="8">8</span>
+          <span class="mac-key" data-key="9">9</span>
+          <span class="mac-key" data-key="0">0</span>
+          <span class="mac-key" data-key="-">−</span>
+          <span class="mac-key" data-key="=">=</span>
+          <span class="mac-key mac-key-w12" data-key="delete">⌫</span>
+        </div>
+        <!-- Row 2: QWERTY row -->
+        <div class="mac-key-row">
+          <span class="mac-key mac-key-w15" data-key="tab">⇥</span>
+          <span class="mac-key" data-key="q">Q</span>
+          <span class="mac-key" data-key="w">W</span>
+          <span class="mac-key" data-key="e">E</span>
+          <span class="mac-key" data-key="r">R</span>
+          <span class="mac-key" data-key="t">T</span>
+          <span class="mac-key" data-key="y">Y</span>
+          <span class="mac-key" data-key="u">U</span>
+          <span class="mac-key" data-key="i">I</span>
+          <span class="mac-key" data-key="o">O</span>
+          <span class="mac-key" data-key="p">P</span>
+          <span class="mac-key" data-key="[">[</span>
+          <span class="mac-key" data-key="]">]</span>
+          <span class="mac-key mac-key-w14" data-key="backslash">\</span>
+        </div>
+        <!-- Row 3: Home row -->
+        <div class="mac-key-row">
+          <span class="mac-key mac-key-w18" data-key="caps">⇪</span>
+          <span class="mac-key" data-key="a">A</span>
+          <span class="mac-key" data-key="s">S</span>
+          <span class="mac-key" data-key="d">D</span>
+          <span class="mac-key" data-key="f">F</span>
+          <span class="mac-key" data-key="g">G</span>
+          <span class="mac-key" data-key="h">H</span>
+          <span class="mac-key" data-key="j">J</span>
+          <span class="mac-key" data-key="k">K</span>
+          <span class="mac-key" data-key="l">L</span>
+          <span class="mac-key" data-key=";">;</span>
+          <span class="mac-key" data-key="'">'</span>
+          <span class="mac-key mac-key-w22" data-key="enter">⏎</span>
+        </div>
+        <!-- Row 4: ZXCV row -->
+        <div class="mac-key-row">
+          <span class="mac-key mac-key-w23" data-key="shift">⇧</span>
+          <span class="mac-key" data-key="z">Z</span>
+          <span class="mac-key" data-key="x">X</span>
+          <span class="mac-key" data-key="c">C</span>
+          <span class="mac-key" data-key="v">V</span>
+          <span class="mac-key" data-key="b">B</span>
+          <span class="mac-key" data-key="n">N</span>
+          <span class="mac-key" data-key="m">M</span>
+          <span class="mac-key" data-key=",">,</span>
+          <span class="mac-key" data-key=".">.</span>
+          <span class="mac-key" data-key="/">/</span>
+          <span class="mac-key mac-key-w23" data-key="shift-r">⇧</span>
+        </div>
+        <!-- Row 5: Bottom row -->
+        <div class="mac-key-row">
+          <span class="mac-key mac-key-w12" data-key="ctrl">⌃</span>
+          <span class="mac-key mac-key-w12" data-key="opt">⌥</span>
+          <span class="mac-key mac-key-w14" data-key="cmd">⌘</span>
+          <span class="mac-key mac-key-w70" data-key="space"></span>
+          <span class="mac-key mac-key-w14" data-key="cmd-r">⌘</span>
+          <span class="mac-key mac-key-w12" data-key="opt-r">⌥</span>
+          <span class="mac-key mac-key-w18" data-key="ctrl-r">⌃</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== 投影 ========== -->
+    <div class="mac-shadow"></div>
+  </div>
+</div>
+
+<style is:global>
+/* ==================================================
+   Macintosh 3D — 复古 Mac 128k 风格
+   克莱因蓝 + 纯白 · CSS 3D Transforms
+   ================================================== */
+
+/* ---- 容器 ---- */
+.mac-wrapper {
+  perspective: 1400px;
+  width: 520px;
+  height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mac-container {
+  position: relative;
+  width: 460px;
+  transform-style: preserve-3d;
+  animation: macFloat 6s ease-in-out infinite;
+}
+
+/* ===== 主体 ===== */
+.mac-body {
+  position: relative;
+  width: 360px;
+  height: 400px;
+  margin: 0 auto;
+  transform-style: preserve-3d;
+  transform: perspective(900px) rotateX(-2deg) rotateY(-4deg);
+}
+
+/* ---- 正面机身 ---- */
+.mac-front {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(170deg, #F8F5F0 0%, #F0EBE4 40%, #E8E3DC 100%);
+  border-radius: 18px 18px 16px 16px;
+  border: 1px solid rgba(0, 47, 167, 0.08);
+  box-shadow:
+    /* 轻拟物高光 */
+    -3px -3px 8px rgba(255,255,255,0.8),
+    4px 4px 12px rgba(0,0,0,0.06),
+    /* 克莱因蓝投射 */
+    0 8px 32px rgba(0, 47, 167, 0.10),
+    0 2px 8px rgba(0, 47, 167, 0.06),
+    /* 边缘内阴影 */
+    inset -1px -1px 2px rgba(0,0,0,0.04),
+    inset 1px 1px 2px rgba(255,255,255,0.6);
+  overflow: hidden;
+}
+
+/* ---- 屏幕边框（深斜面） ---- */
+.mac-screen-bezel {
+  position: relative;
+  width: 300px;
+  height: 225px;
+  margin: 16px auto 0;
+  background: linear-gradient(145deg, #1a1a1a 0%, #0d0d0d 100%);
+  border-radius: 10px;
+  box-shadow:
+    inset 0 2px 6px rgba(0,0,0,0.6),
+    inset 0 -1px 2px rgba(255,255,255,0.05),
+    0 1px 0 rgba(255,255,255,0.1);
+  overflow: hidden;
+}
+
+/* 屏幕内斜面 */
+.mac-screen-bevel {
+  position: absolute;
+  inset: 0;
+  border-radius: 10px;
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,0.03),
+    inset 0 0 20px rgba(0,0,0,0.3);
+  pointer-events: none;
+  z-index: 3;
+}
+
+/* ---- 屏幕（纯黑） ---- */
+.mac-screen {
+  position: absolute;
+  inset: 8px;
+  background: #080808;
+  border-radius: 3px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  z-index: 2;
+}
+
+/* 屏幕表面反光 */
+.mac-screen-glare {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, transparent 40%, rgba(0,47,167,0.02) 70%, transparent 100%);
+  pointer-events: none;
+  z-index: 4;
+  border-radius: 10px;
+}
+
+/* ===== 菜单栏 ===== */
+.mac-menubar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 20px;
+  padding: 0 8px;
+  background: rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.mac-menubar-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.mac-menubar-apple {
+  font-size: 12px;
+  color: #FFFFFF;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.mac-menubar-item {
+  font-family: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+  font-size: 9px;
+  color: rgba(255, 255, 255, 0.55);
+  cursor: pointer;
+  padding: 0 3px;
+  letter-spacing: 0.02em;
+}
+.mac-menubar-item.active {
+  color: #FFFFFF;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.mac-menubar-right {
+  font-family: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+  font-size: 9px;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+/* ===== 桌面 ===== */
+.mac-desktop {
+  flex: 1;
+  position: relative;
+}
+
+/* 桌面图标 */
+.mac-desktop-icons {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.mac-icon {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.mac-icon-svg {
+  opacity: 0.8;
+}
+
+.mac-icon-label {
+  font-family: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+  font-size: 7px;
+  text-align: center;
+  white-space: nowrap;
+}
+.mac-icon-label.white { color: rgba(255, 255, 255, 0.65); }
+.mac-icon-label.orange { color: #FF7A00; }
+
+/* ===== 文档窗口 ===== */
+.mac-window {
+  position: absolute;
+  top: 22px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 260px;
+  background: #111111;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  animation: windowAppear 0.6s ease-out 1.5s forwards;
+}
+
+@keyframes windowAppear {
+  from { opacity: 0; transform: translateX(-50%) scale(0.95) translateY(6px); }
+  to { opacity: 1; transform: translateX(-50%) scale(1) translateY(0); }
+}
+
+.mac-window-titlebar {
+  display: flex;
+  align-items: center;
+  height: 18px;
+  padding: 0 6px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.04) 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  gap: 6px;
+}
+
+.mac-window-controls {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.mac-window-btn {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: transparent;
+  cursor: pointer;
+}
+.mac-window-btn.close { border-color: #FF7A00; background: rgba(255,122,0,0.2); }
+.mac-window-btn.collapse { border-color: rgba(255,255,255,0.25); }
+.mac-window-btn.zoom { border-color: rgba(255,255,255,0.25); }
+
+.mac-window-title {
+  font-family: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+  font-size: 9px;
+  color: rgba(255, 255, 255, 0.6);
+  flex: 1;
+  text-align: center;
+  letter-spacing: 0.05em;
+}
+
+.mac-window-body {
+  padding: 6px 10px 8px;
+  font-family: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+  font-size: 9px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.88);
+  word-break: break-word;
+}
+
+.mac-window-body::-webkit-scrollbar { width: 3px; }
+.mac-window-body::-webkit-scrollbar-track { background: transparent; }
+.mac-window-body::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 2px; }
+
+/* 闪烁光标 */
+.mac-cursor {
+  color: #FF7A00;
+  font-weight: bold;
+  animation: cursorBlink 0.6s step-end infinite;
+  margin-left: 1px;
+}
+
+.mac-cursor.blink {
+  animation: cursorBlink 0.6s step-end infinite;
+}
+
+@keyframes cursorBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* 桌面底部状态栏 */
+.mac-desktop-footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+  font-family: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+  font-size: 7px;
+  color: rgba(255, 255, 255, 0.25);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* ===== 下半部分机身 ===== */
+.mac-bottom-area {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 130px;
+  padding: 0 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 散热格栅 */
+.mac-vent {
+  display: flex;
+  gap: 5px;
+  margin-bottom: 10px;
+}
+
+.mac-vent-slot {
+  width: 14px;
+  height: 4px;
+  background: rgba(0, 47, 167, 0.08);
+  border-radius: 2px;
+  border: 1px solid rgba(0, 47, 167, 0.05);
+}
+
+/* 品牌区域 */
+.mac-brand-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  margin-bottom: 6px;
+}
+
+.mac-apple-logo {
+  opacity: 0.5;
+}
+
+.mac-brand-text {
+  font-family: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+  font-size: 10px;
+  color: rgba(0, 47, 167, 0.35);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+/* 软驱 */
+.mac-floppy-area {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mac-floppy-slot {
+  width: 60px;
+  height: 12px;
+  background: #1a1a1a;
+  border-radius: 2px;
+  border: 1px solid rgba(0,0,0,0.3);
+  overflow: hidden;
+  position: relative;
+}
+
+.mac-floppy-inner {
+  position: absolute;
+  left: 6px;
+  top: 3px;
+  width: 30px;
+  height: 5px;
+  background: rgba(0, 47, 167, 0.15);
+  border-radius: 1px;
+}
+
+.mac-floppy-led {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba(0, 47, 167, 0.3);
+  box-shadow: 0 0 4px rgba(0, 47, 167, 0.2);
+}
+
+/* ===== 右侧 LED 面板 ===== */
+.mac-led-panel {
+  position: absolute;
+  right: -48px;
+  top: 90px;
+  width: 40px;
+  background: #0a0a0a;
+  border: 1px solid rgba(0, 47, 167, 0.15);
+  border-radius: 3px;
+  overflow: hidden;
+  transform: perspective(900px) rotateY(4deg);
+  box-shadow: 2px 2px 8px rgba(0,0,0,0.15);
+}
+
+.mac-led-header {
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.5);
+  font-family: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+  font-size: 7px;
+  text-align: center;
+  padding: 3px 0;
+  letter-spacing: 0.1em;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.mac-led-screen {
+  padding: 6px 6px 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.mac-led-line {
+  font-family: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+  font-size: 7px;
+  color: rgba(255, 255, 255, 0.65);
+  letter-spacing: 0.05em;
+  line-height: 1.5;
+}
+
+.mac-led-status {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  margin-top: 2px;
+  font-family: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+  font-size: 6px;
+  color: rgba(255, 255, 255, 0.35);
+  letter-spacing: 0.05em;
+}
+
+.mac-led-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #FF7A00;
+  box-shadow: 0 0 4px rgba(255, 122, 0, 0.4);
+  animation: ledPulse 2s ease-in-out infinite;
+}
+
+@keyframes ledPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+/* ===== 机身底部边缘 ===== */
+.mac-bottom-edge {
+  position: absolute;
+  bottom: -8px;
+  left: 8px;
+  right: 8px;
+  height: 8px;
+  background: linear-gradient(180deg, #E8E3DC, #DDD8D0);
+  border-radius: 0 0 12px 12px;
+  box-shadow: 0 -1px 0 rgba(0,0,0,0.02);
+}
+
+/* ===== 键盘 ===== */
+.mac-keyboard {
+  position: relative;
+  width: 420px;
+  margin: 12px auto 0;
+  transform: perspective(900px) rotateX(3deg);
+  opacity: 0;
+  animation: keyboardSlideIn 0.8s ease-out 2s forwards;
+}
+
+@keyframes keyboardSlideIn {
+  from { opacity: 0; transform: perspective(900px) rotateX(6deg) translateY(20px); }
+  to { opacity: 1; transform: perspective(900px) rotateX(3deg) translateY(0); }
+}
+
+.mac-keyboard-body {
+  background: linear-gradient(180deg, #F0EBE4 0%, #E8E3DC 100%);
+  border-radius: 8px;
+  padding: 10px 12px 8px;
+  border: 1px solid rgba(0, 47, 167, 0.08);
+  box-shadow:
+    0 4px 16px rgba(0, 47, 167, 0.06),
+    0 1px 2px rgba(0,0,0,0.04),
+    inset 0 1px 0 rgba(255,255,255,0.6);
+}
+
+.mac-key-row {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 4px;
+  justify-content: center;
+}
+.mac-key-row:last-child { margin-bottom: 0; }
+
+/* 单个按键 */
+.mac-key {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 26px;
+  min-width: 26px;
+  background: linear-gradient(180deg, #FFFFFF 0%, #F5F2ED 100%);
+  border: 1px solid rgba(0, 47, 167, 0.08);
+  border-radius: 3px;
+  font-family: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+  font-size: 7px;
+  color: rgba(0, 47, 167, 0.45);
+  box-shadow:
+    0 1px 0 rgba(0,0,0,0.04),
+    0 1px 2px rgba(0, 47, 167, 0.04),
+    inset 0 1px 0 rgba(255,255,255,0.8),
+    inset 0 -1px 0 rgba(0,0,0,0.02);
+  cursor: pointer;
+  transition: transform 0.08s ease, box-shadow 0.08s ease, background 0.08s ease;
+  user-select: none;
+  position: relative;
+}
+
+/* 按键按下状态 */
+.mac-key.pressed {
+  transform: translateY(2px);
+  background: linear-gradient(180deg, #EDE8E0 0%, #F0EBE4 100%);
+  box-shadow:
+    0 0 0 rgba(0,0,0,0.04),
+    0 1px 0 rgba(0, 47, 167, 0.02),
+    inset 0 2px 3px rgba(0,0,0,0.04);
+}
+
+/* 按键蓝光涟漪 */
+.mac-key.ripple::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 5px;
+  border: 1.5px solid rgba(0, 47, 167, 0.2);
+  animation: keyRipple 0.4s ease-out forwards;
+  pointer-events: none;
+}
+
+@keyframes keyRipple {
+  0% { transform: scale(0.8); opacity: 1; }
+  100% { transform: scale(1.3); opacity: 0; }
+}
+
+/* 按键宽度变体 */
+.mac-key-w12 { min-width: 36px; }
+.mac-key-w14 { min-width: 38px; }
+.mac-key-w15 { min-width: 40px; }
+.mac-key-w18 { min-width: 44px; }
+.mac-key-w22 { min-width: 52px; }
+.mac-key-w23 { min-width: 54px; }
+.mac-key-w70 { min-width: 160px; }
+
+.mac-key[data-key="space"] {
+  min-width: 160px;
+}
+
+/* ===== 底部投影 ===== */
+.mac-shadow {
+  width: 340px;
+  height: 24px;
+  background: radial-gradient(ellipse at center, rgba(0,47,167,0.06) 0%, transparent 70%);
+  margin: 2px auto 0;
+  border-radius: 50%;
+  filter: blur(6px);
+  transform: perspective(900px) rotateX(8deg);
+}
+
+/* ===== 浮动动画 ===== */
+@keyframes macFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+/* ===== 响应式 ===== */
+@media (max-width: 768px) {
+  .mac-wrapper {
+    width: 100%;
+    height: auto;
+    perspective: 800px;
+  }
+  .mac-container {
+    width: 100%;
+    max-width: 360px;
+  }
+  .mac-body { width: 300px; height: 340px; }
+  .mac-screen-bezel { width: 250px; height: 190px; }
+  .mac-screen { inset: 6px; }
+  .mac-window { width: 220px; top: 44px; }
+  .mac-window-body { font-size: 8px; padding: 10px; min-height: 56px; }
+  .mac-menubar { height: 18px; }
+  .mac-menubar-item { font-size: 7px; }
+  .mac-bottom-area { height: 100px; }
+  .mac-vent-slot { width: 10px; height: 3px; }
+  .mac-led-panel { right: -36px; top: 70px; width: 32px; }
+  .mac-led-line { font-size: 6px; }
+  .mac-keyboard { width: 340px; }
+  .mac-keyboard-body { padding: 8px 10px 6px; }
+  .mac-key { height: 22px; min-width: 22px; font-size: 6px; }
+  .mac-key-w70 { min-width: 120px; }
+  .mac-key[data-key="space"] { min-width: 120px; }
+  .mac-key-w18 { min-width: 36px; }
+  .mac-key-w22 { min-width: 42px; }
+  .mac-key-w23 { min-width: 44px; }
+  .mac-shadow { width: 280px; }
+}
+</style>
+
+	<script is:inline>
+(function() {
+  // 时钟更新
+  function updateClock() {
+    const now = new Date();
+    const h = String(now.getHours()).padStart(2, '0');
+    const m = String(now.getMinutes()).padStart(2, '0');
+    const el = document.getElementById('macClockDisplay');
+    if (el) el.textContent = h + ':' + m;
+  }
+  updateClock();
+  setInterval(updateClock, 10000);
+})();
+</script>
