@@ -64,7 +64,7 @@ export const projects: Project[] = [
       why: '人的记忆会衰减、情绪会偏差、决策会反复。通用大模型的概率生成本质，和"必须准确"的决策场景之间存在根本矛盾。我选择用"循证医学"的思维来解这个题：不依赖模型记住一切，而是为它建一座"经验智库"——用结构化的案例库和特征提取框架，让 AI 在真实案例中找答案，而不是在训练数据里"编"答案。AI 的核心价值不是回答得更流畅，而是回答得更可信',
       whatIf: '最大的判断错误是低估了案例库冷启动的难度。前期花了很多时间打磨特征工程，但如果一开始没有 500+ 条高质量种子案例，检索效果就是零。应该先人工准备种子数据、验证"匹配优于生成"这个假设，再去自动化采集和蒸馏管线',
     },
-    demoUrl: 'https://huang-doudou567.github.io/your-world-editor/',
+    demoUrl: 'https://world.huangdoudou.asia',
   },
   {
     slug: 'snack-selection-agent',
@@ -104,7 +104,7 @@ export const projects: Project[] = [
       why: '市面上已有工具都在做"什么好卖"的排名，但真正的问题是"我的店、我的渠道、我的成本结构，适合卖什么"。没有两个店是一样的。Agent 的真正价值是把决策流程自动化——爬数据→匹配自身情况→生成选品建议→追踪决策结果',
       whatIf: '应该先人工用 Excel 跑一遍选品分析流程，验证方法真的能帮店主做决策，再去写爬虫和 Agent 代码。评分模型的权重设计应该更早引入业务方反馈',
     },
-    demoUrl: 'https://huang-doudou567.github.io/snack-selection-agent/',
+    demoUrl: 'https://snack.huangdoudou.asia',
   },
   {
     slug: 'tax-policy-search',
@@ -145,7 +145,7 @@ export const projects: Project[] = [
       why: '用户拿着 AI 给出的政策依据去做税务申报，如果 AI 用的是已废止的法规，用户要承担责任。信息架构就是信任架构——每条搜索结果的来源标识、发布时间戳、时效性状态、法规原文 ID 这四个字段的设计花了最长时间，因为它们是用户信任的基础',
       whatIf: '最大的判断错误是低估了数据源的可达性约束。花了大量时间评估 Vercel vs Cloudflare vs Deno，但根本问题不是选哪个云——而是 NPC 政府 API 物理上只限中国境内访问。这个问题在架构设计第一天就应该被标记为 P0 风险',
     },
-    demoUrl: 'https://huang-doudou567.github.io/tax-policy-search/',
+    demoUrl: 'https://tax.huangdoudou.asia',
   },
 ];
 

@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import StickyToc from '../../components/StickyToc.astro';
-import { getProjectBySlug, getAdjacentProjects } from '../../data/projects';
+import { getProjectBySlug, getAdjacentProjects, projects } from '../../data/projects';
 import { articles } from '../../data/articles';
 
 // 手动关联：文章正文明确引用/讨论了特定项目
@@ -61,6 +61,9 @@ if (!project) {
 }
 
 const relatedArticles = getRelatedArticles(project.tags, slug);
+
+// 其他项目（当前项目以外的导航入口）
+const otherProjects = projects.filter(p => p.slug !== slug);
 
 // 封面图映射
 const coverImages: Record<string, string> = {
@@ -491,4 +494,18 @@ tocSections.push({ id: 'sec-three-questions', label: '产品三问' });
       </div>
     </div>
   </section>
+
+  <!-- 右侧固定项目导航（桌面端） -->
+  <div class="fixed right-0 top-1/2 -translate-y-1/2 z-40 hidden lg:flex flex-col items-end gap-1.5 pointer-events-none">
+    <span class="text-[9px] font-mono-code text-charcoal-800/30 tracking-widest pr-4 mb-0.5">PROJECTS</span>
+    {otherProjects.map((p) => (
+      <a href={`/projects/${p.slug}`}
+        class="pointer-events-auto group flex items-center gap-2 pl-2.5 pr-2 py-1.5 rounded-l-sm border border-r-0 border-blueprint-500/10 bg-white/90 backdrop-blur-sm hover:bg-blueprint-500/5 hover:border-blueprint-500/30 transition-all text-right">
+        <span class="text-[11px] font-medium text-charcoal-800/50 group-hover:text-blueprint-600 transition-colors whitespace-nowrap">{p.title}</span>
+        <svg class="w-3 h-3 text-blueprint-600/30 group-hover:text-blueprint-600 transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+        </svg>
+      </a>
+    ))}
+  </div>
 </BaseLayout>
